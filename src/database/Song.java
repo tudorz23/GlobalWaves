@@ -2,7 +2,6 @@ package database;
 
 import fileio.input.SongInput;
 import utils.AudioType;
-
 import java.util.ArrayList;
 
 public class Song extends Audio {

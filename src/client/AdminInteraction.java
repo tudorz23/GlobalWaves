@@ -1,6 +1,8 @@
 package client;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import commands.CommandFactory;
+import commands.ICommand;
 import database.Database;
 import database.Podcast;
 import database.Song;
@@ -12,6 +14,11 @@ import java.util.List;
 
 public class AdminInteraction {
     private Database database;
+    private Session session;
+    private Invoker invoker;
+
+    private CommandFactory commandFactory;
+
     private final LibraryInput libraryInput;
     private final List<CommandInput> commandList;
     private ArrayNode output;
@@ -21,6 +28,7 @@ public class AdminInteraction {
         this.libraryInput = libraryInput;
         this.commandList = commandList;
         this.output = output;
+        invoker = new Invoker();
     }
 
     /**
@@ -28,7 +36,9 @@ public class AdminInteraction {
      */
     public void startAdminInteraction() {
         prepareDatabase();
-        printDatabase();
+        initSession();
+        commandFactory = new CommandFactory(session, output);
+        startCommands();
     }
 
     /**
@@ -37,20 +47,55 @@ public class AdminInteraction {
     private void prepareDatabase() {
         this.database = new Database();
 
+        // Populate database with songs.
         for (SongInput songInput : libraryInput.getSongs()) {
             Song song = new Song(songInput);
             database.addSong(song);
         }
 
+        // Populate database with podcasts.
         for (PodcastInput podcastInput : libraryInput.getPodcasts()) {
             Podcast podcast = new Podcast(podcastInput);
             database.addPodcast(podcast);
         }
 
+        // Populate database with users.
         for (UserInput userInput : libraryInput.getUsers()) {
             User user =  new User(userInput);
             database.addUser(user);
         }
+    }
+
+    /**
+     * Initializes a new Session.
+     */
+    private void initSession() {
+        this.session = new Session(database);
+    }
+
+    /**
+     * Iterates through the commands from the input.
+     */
+    private void startCommands() {
+        for (CommandInput commandInput : commandList) {
+            executeAction(commandInput);
+        }
+    }
+
+    /**
+     * Calls the Command Factory to generate a command based on the commandInput.
+     * @param commandInput the current command.
+     */
+    private void executeAction(CommandInput commandInput) {
+        ICommand command;
+
+        try {
+            command = commandFactory.getCommand(commandInput);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return;
+        }
+
+        invoker.execute(command);
     }
 
     private void printDatabase() {

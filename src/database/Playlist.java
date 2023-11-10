@@ -2,7 +2,6 @@ package database;
 
 import utils.AudioType;
 import utils.Visibility;
-
 import java.util.ArrayList;
 
 public class Playlist extends Audio {
