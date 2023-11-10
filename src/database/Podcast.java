@@ -2,19 +2,22 @@ package database;
 
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
+import utils.AudioType;
 
 import java.util.ArrayList;
 
-public class Podcast {
+public class Podcast extends Audio {
     private String name;
     private String owner;
     private ArrayList<Episode> episodes;
 
     /* Constructor */
     public Podcast(PodcastInput podcastInput) {
+        super();
         this.name = podcastInput.getName();
         this.owner = podcastInput.getOwner();
         this.episodes = initializeEpisodes(podcastInput.getEpisodes());
+        setType(AudioType.PODCAST);
     }
 
     /**

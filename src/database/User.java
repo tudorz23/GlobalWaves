@@ -2,17 +2,20 @@ package database;
 
 import fileio.input.UserInput;
 
+import java.util.ArrayList;
+
 public class User {
     private String username;
     private int age;
     private String city;
-
+    private ArrayList<Audio> searchResult;
 
     /* Constructor */
     public User(UserInput userInput) {
         this.username = userInput.getUsername();
         this.age = userInput.getAge();
         this.city = userInput.getCity();
+        this.searchResult = new ArrayList<>();
     }
 
 
@@ -35,5 +38,13 @@ public class User {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public ArrayList<Audio> getSearchResult() {
+        return searchResult;
+    }
+
+    public void setSearchResult(ArrayList<Audio> searchResult) {
+        this.searchResult = searchResult;
     }
 }

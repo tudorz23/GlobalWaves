@@ -1,10 +1,11 @@
 package database;
 
 import fileio.input.SongInput;
+import utils.AudioType;
 
 import java.util.ArrayList;
 
-public class Song {
+public class Song extends Audio {
     private String name;
     private Integer duration;
     private String album;
@@ -17,6 +18,7 @@ public class Song {
 
     /* Constructor */
     public Song(SongInput songInput) {
+        super();
         this.name = songInput.getName();
         this.duration = songInput.getDuration();
         this.album = songInput.getAlbum();
@@ -25,6 +27,7 @@ public class Song {
         this.genre = songInput.getGenre();
         this.releaseYear = songInput.getReleaseYear();
         this.artist = songInput.getArtist();
+        setType(AudioType.SONG);
     }
 
 
