@@ -78,7 +78,7 @@ public final class Main {
         ArrayNode outputs = objectMapper.createArrayNode();
 
         // TODO add your implementation
-        List<CommandInput> commandList = Arrays.asList(objectMapper.readValue(new File(filePathInput), CommandInput[].class));
+        List<CommandInput> commandList = Arrays.asList(objectMapper.readValue(new File("input/" + filePathInput), CommandInput[].class));
 
         AdminInteraction adminInteraction = new AdminInteraction(library, commandList, outputs);
         adminInteraction.startAdminInteraction();
