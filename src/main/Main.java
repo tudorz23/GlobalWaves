@@ -2,6 +2,7 @@ package main;
 
 import checker.Checker;
 import checker.CheckerConstants;
+import client.AdminInteraction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -75,7 +78,10 @@ public final class Main {
         ArrayNode outputs = objectMapper.createArrayNode();
 
         // TODO add your implementation
-        CommandInput commandInput = objectMapper.readValue(new File(filePathInput), CommandInput.class);
+        List<CommandInput> commandList = Arrays.asList(objectMapper.readValue(new File(filePathInput), CommandInput[].class));
+
+        AdminInteraction adminInteraction = new AdminInteraction(library, commandList, outputs);
+        adminInteraction.startAdminInteraction();
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePathOutput), outputs);
