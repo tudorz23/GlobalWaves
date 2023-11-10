@@ -6,7 +6,6 @@ import utils.AudioType;
 import java.util.ArrayList;
 
 public class Song extends Audio {
-    private String name;
     private Integer duration;
     private String album;
     private ArrayList<String> tags;
@@ -19,7 +18,7 @@ public class Song extends Audio {
     /* Constructor */
     public Song(SongInput songInput) {
         super();
-        this.name = songInput.getName();
+        this.setName(songInput.getName());
         this.duration = songInput.getDuration();
         this.album = songInput.getAlbum();
         this.tags = songInput.getTags();
@@ -33,12 +32,6 @@ public class Song extends Audio {
 
 
     /* Getters and Setters */
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
     public Integer getDuration() {
         return duration;
     }

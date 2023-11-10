@@ -6,7 +6,6 @@ import utils.Visibility;
 import java.util.ArrayList;
 
 public class Playlist extends Audio {
-    private String name;
     private String owner;
     private Visibility visibility;
     private ArrayList<Song> songs;
@@ -14,7 +13,7 @@ public class Playlist extends Audio {
     /* Constructor */
     public Playlist(String name, String owner) {
         super();
-        this.name = name;
+        this.setName(name);
         this.owner = owner;
         this.visibility = Visibility.PUBLIC;
         this.songs = new ArrayList<>();
@@ -36,9 +35,6 @@ public class Playlist extends Audio {
     }
 
     /* Getters and Setters */
-    public String getName() {
-        return name;
-    }
     public String getOwner() {
         return owner;
     }

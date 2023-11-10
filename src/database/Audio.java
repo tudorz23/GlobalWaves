@@ -7,6 +7,7 @@ import utils.AudioType;
  * To be extended by classes Song, Playlist and Podcast.
  */
 public class Audio {
+    private String name;
     private AudioType type;
 
     /* Constructor */
@@ -15,6 +16,12 @@ public class Audio {
     }
 
     /* Getters and Setters */
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public AudioType getType() {
         return type;
     }
