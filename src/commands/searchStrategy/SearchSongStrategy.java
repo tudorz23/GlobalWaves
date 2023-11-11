@@ -30,6 +30,9 @@ public class SearchSongStrategy implements ISearchStrategy {
 
         FiltersInput filtersInput = commandInput.getFilters();
 
+        // Add all songs, then remove those that do not respect the given filters.
+        searchResult.addAll(session.getDatabase().getSongs());
+
         if (filtersInput.getName() != null) {
             searchSongsByName(searchResult, filtersInput.getName());
         }
@@ -57,139 +60,63 @@ public class SearchSongStrategy implements ISearchStrategy {
         if (filtersInput.getArtist() != null) {
             searchSongsByArtist(searchResult, filtersInput.getArtist());
         }
+
+        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+            searchResult.remove(searchResult.size() - 1);
+        }
     }
 
     private void searchSongsByName(ArrayList<Audio> searchResult, String name) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!song.getName().startsWith(name)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (song.getName().startsWith(name)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getName().startsWith(name)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchSongsByAlbum(ArrayList<Audio> searchResult, String album) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!song.getAlbum().equals(album)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (song.getAlbum().equals(album)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getAlbum().equals(album)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchSongsByTags(ArrayList<Audio> searchResult, ArrayList<String> tags) {
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                boolean containsTag = false;
-                for (String tag : tags) {
-                    if (song.getTags().contains(tag)) {
-                        containsTag = true;
-                        break;
-                    }
-                }
-
-                if (!containsTag) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            for (String tag : tags) {
-                if (song.getTags().contains(tag)) {
-                    searchResult.add(song);
-                    break;
-                }
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getTags().containsAll(tags)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchSongsByLyrics(ArrayList<Audio> searchResult, String lyrics) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!song.getLyrics().contains(lyrics)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (song.getLyrics().contains(lyrics)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getLyrics().contains(lyrics)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchSongsByGenre(ArrayList<Audio> searchResult, String genre) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!song.getGenre().equals(genre)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (song.getGenre().contains(genre)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getGenre().equalsIgnoreCase(genre)) {
+                iterator.remove();
             }
         }
     }
@@ -199,25 +126,12 @@ public class SearchSongStrategy implements ISearchStrategy {
         String stringYear = releaseYear.substring(1);
         int reqYear = Integer.parseInt(stringYear);
 
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!respectsCriteria(song.getReleaseYear(), reqYear, criteria)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (respectsCriteria(song.getReleaseYear(), reqYear, criteria)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!respectsCriteria(song.getReleaseYear(), reqYear, criteria)) {
+                iterator.remove();
             }
         }
     }
@@ -234,25 +148,12 @@ public class SearchSongStrategy implements ISearchStrategy {
     }
 
     private void searchSongsByArtist(ArrayList<Audio> searchResult, String artist) {
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Song song = (Song) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Song song = (Song) iterator.next();
 
-                if (!song.getArtist().equals(artist)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Song song : session.getDatabase().getSongs()) {
-            if (song.getArtist().equals(artist)) {
-                searchResult.add(song);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!song.getArtist().equals(artist)) {
+                iterator.remove();
             }
         }
     }

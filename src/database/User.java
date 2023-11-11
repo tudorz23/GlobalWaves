@@ -9,6 +9,7 @@ public class User {
     private int age;
     private String city;
     private ArrayList<Audio> searchResult;
+    private Audio selection;
 
     /* Constructor */
     public User(UserInput userInput) {
@@ -17,7 +18,6 @@ public class User {
         this.city = userInput.getCity();
         this.searchResult = new ArrayList<>();
     }
-
 
 
     /* Getters and Setters */
@@ -39,12 +39,13 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
-
     public ArrayList<Audio> getSearchResult() {
         return searchResult;
     }
-
-    public void setSearchResult(ArrayList<Audio> searchResult) {
-        this.searchResult = searchResult;
+    public Audio getSelection() {
+        return selection;
+    }
+    public void setSelection(Audio selection) {
+        this.selection = selection;
     }
 }

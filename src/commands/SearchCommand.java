@@ -13,25 +13,21 @@ import fileio.output.PrinterSearch;
 public class SearchCommand implements ICommand {
     private Session session;
     private CommandInput commandInput;
+    private User user;
     private ArrayNode output;
 
     /* Constructor */
-    public SearchCommand(Session session, CommandInput commandInput, ArrayNode output) {
+    public SearchCommand(Session session, CommandInput commandInput,
+                         User user, ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
+        this.user = user;
         this.output = output;
     }
 
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-
-        User user;
-        try {
-            user = getUser();
-        } catch (IllegalArgumentException illegalArgumentException) {
-            return;
-        }
 
         // Clear the old search result.
         user.getSearchResult().clear();
@@ -57,18 +53,5 @@ public class SearchCommand implements ICommand {
             }
             default -> throw new IllegalArgumentException("Invalid search criteria.");
         }
-    }
-
-    /**
-     * Traverses the user list from the database.
-     * @return User with the requested username.
-     */
-    private User getUser() {
-        for (User user : session.getDatabase().getUsers()) {
-            if (user.getUsername().equals(commandInput.getUsername())) {
-                return user;
-            }
-        }
-        throw new IllegalArgumentException("User not registered.");
     }
 }

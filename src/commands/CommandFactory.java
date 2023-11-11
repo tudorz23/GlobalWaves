@@ -2,6 +2,7 @@ package commands;
 
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import database.User;
 import fileio.input.CommandInput;
 import utils.CommandType;
 
@@ -28,12 +29,34 @@ public class CommandFactory {
             throw new IllegalArgumentException("Command " + commandInput.getCommand() + " not yet implemented.");
         }
 
+        User user = getUser(commandInput);
+
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user argument.");
+        }
+
         switch (commandType) {
             case SEARCH -> {
-                return new SearchCommand(session, commandInput, output);
+                return new SearchCommand(session, commandInput, user, output);
+            }
+            case SELECT -> {
+                return new SelectCommand(session, commandInput, user, output);
             }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
+    }
+
+    /**
+     * Traverses the user list from the database.
+     * @return User with the requested username.
+     */
+    private User getUser(CommandInput commandInput) {
+        for (User user : session.getDatabase().getUsers()) {
+            if (user.getUsername().equals(commandInput.getUsername())) {
+                return user;
+            }
+        }
+        return null;
     }
 }

@@ -3,35 +3,24 @@ package fileio.output;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import database.Audio;
 import database.User;
 
-public class PrinterSearch extends Printer {
+public class PrinterSelect extends Printer {
     private User user;
 
     /* Constructor */
-    public PrinterSearch(User user, Session session, ArrayNode output) {
+    public PrinterSelect(User user, Session session, ArrayNode output) {
         super(session, output);
         this.user = user;
     }
 
-    public void print() {
+    public void print(String message) {
         ObjectNode commandNode = mapper.createObjectNode();
 
-        commandNode.put("command", "search");
+        commandNode.put("command", "select");
         commandNode.put("user", user.getUsername());
         commandNode.put("timestamp", session.getTimestamp());
-
-
-        String message = "Search returned " + user.getSearchResult().size() + " results";
         commandNode.put("message", message);
-
-        ArrayNode results = mapper.createArrayNode();
-        for (Audio audio : user.getSearchResult()) {
-            results.add(audio.getName());
-        }
-
-        commandNode.set("results", results);
 
         output.add(commandNode);
     }
