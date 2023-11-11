@@ -1,7 +1,26 @@
 package utils;
 
 public enum CommandType {
-    SEARCH("search");
+    SEARCH("search"),
+    SELECT("select"),
+    LOAD("load"),
+    PLAY_PAUSE("playPause"),
+    REPEAT("repeat"),
+    SHUFFLE("shuffle"),
+    FORWARD("forward"),
+    BACKWARD("backward"),
+    LIKE("like"),
+    NEXT("next"),
+    PREV("prev"),
+    ADD_REMOVE_IN_PLAYLIST("addRemoveInPlaylist"),
+    STATUS("status"),
+    CREATE_PLAYLIST("createPlaylist"),
+    SWITCH_VISIBILITY("switchVisibility"),
+    FOLLOW("follow"),
+    SHOW_PLAYLISTS("showPlaylists"),
+    SHOW_PREFERRED_SONGS("showPreferredSongs"),
+    GET_TOP5_SONGS("getTop5Songs"),
+    GET_TOP5_PLAYLISTS("getTop5Playlists");
 
     private final String label;
 

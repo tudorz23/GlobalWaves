@@ -25,14 +25,14 @@ public class CommandFactory {
         CommandType commandType = CommandType.fromString(commandInput.getCommand());
 
         if (commandType == null) {
-            throw new IllegalArgumentException("Command " + commandInput.getType() + " not yet implemented.");
+            throw new IllegalArgumentException("Command " + commandInput.getCommand() + " not yet implemented.");
         }
 
         switch (commandType) {
             case SEARCH -> {
                 return new SearchCommand(session, output);
             }
-            default -> throw new IllegalArgumentException("Command " + commandInput.getType()
+            default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
     }
