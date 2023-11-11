@@ -19,6 +19,14 @@ public abstract class Audio {
      */
     public abstract Audio getDeepCopy();
 
+    /**
+     * Simulates the passing ot the time between last update moment
+     * and current timestamp.
+     */
+    public abstract void simulateTimePass(Player player, int currTime);
+
+    public abstract int getRemainedTime();
+
     /* Getters and Setters */
     public String getName() {
         return name;

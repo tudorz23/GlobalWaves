@@ -56,6 +56,17 @@ public class Podcast extends Audio {
         return copy;
     }
 
+    @Override
+    public void simulateTimePass(Player player, int currTime) {
+        // TODO
+    }
+
+    @Override
+    public int getRemainedTime() {
+        // TODO
+        return 0;
+    }
+
     /* Getters and Setters */
     public String getOwner() {
         return owner;

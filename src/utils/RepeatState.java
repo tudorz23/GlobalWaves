@@ -1,12 +1,12 @@
 package utils;
 
 public enum RepeatState {
-    NO_REPEAT_PLAYLIST("no repeat"),
-    REPEAT_ALL_PLAYLIST("repeat all"),
-    REPEAT_CURR_SONG_PLAYLIST("repeat current song"),
-    NO_REPEAT("no repeat"),
-    REPEAT_ONCE("repeat once"),
-    REPEAT_INFINITE("repeat infinite");
+    NO_REPEAT_PLAYLIST("No Repeat"),
+    REPEAT_ALL_PLAYLIST("Repeat All"),
+    REPEAT_CURR_SONG_PLAYLIST("Repeat Current Song"),
+    NO_REPEAT("No Repeat"),
+    REPEAT_ONCE("Repeat Once"),
+    REPEAT_INFINITE("Repeat Infinite");
 
     private final String label;
 

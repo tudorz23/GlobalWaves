@@ -2,6 +2,9 @@ package database;
 
 import fileio.input.SongInput;
 import utils.AudioType;
+import utils.PlayerState;
+import utils.RepeatState;
+
 import java.util.ArrayList;
 
 public class Song extends Audio {
@@ -46,6 +49,68 @@ public class Song extends Audio {
         copy.timePosition = 0;
 
         return copy;
+    }
+
+    @Override
+    public void simulateTimePass(Player player, int currTime) {
+        int remainingTime = duration - timePosition;
+        int elapsedTime = currTime - player.getPrevTimeInfo();
+
+        player.setPrevTimeInfo(currTime);
+
+        if (player.getPlayerState() == PlayerState.PAUSED
+            || player.getPlayerState() == PlayerState.STOPPED) {
+            return;
+        }
+
+        if (remainingTime < elapsedTime) {
+            int timeAfterComplete = elapsedTime - remainingTime;
+            int quotient = timeAfterComplete / duration;
+            int remainder = timeAfterComplete % duration;
+
+            if (player.getRepeatState() == RepeatState.NO_REPEAT) {
+                timePosition = duration;
+                player.setPlayerState(PlayerState.STOPPED);
+                return;
+            }
+
+            if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
+                if (quotient > 1) {
+                    // Surely, it was repeated at least once.
+                    player.setPlayerState(PlayerState.STOPPED);
+                    return;
+                }
+
+                if (player.hasRepeatedOnce()) {
+                    // It already repeated.
+                    player.setPlayerState(PlayerState.STOPPED);
+                    return;
+                }
+
+                // Didn't repeat once.
+                player.setRepeatedOnce(true);
+                timePosition = remainder;
+                return;
+            }
+
+            // Repeat infinite
+            timePosition = remainder;
+            return;
+        }
+
+        if (remainingTime == elapsedTime) {
+            timePosition = duration;
+            player.setPlayerState(PlayerState.STOPPED);
+            return;
+        }
+
+        // The song did not finish.
+        timePosition += elapsedTime;
+    }
+
+    @Override
+    public int getRemainedTime() {
+        return (duration - timePosition);
     }
 
     /* Getters and Setters */

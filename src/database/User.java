@@ -12,6 +12,7 @@ public class User {
     private Audio selection;
     private Player player;
     private ArrayList<Playlist> playlists;
+    private ArrayList<Podcast> listenedPodcasts;
 
     /* Constructor */
     public User(UserInput userInput) {
@@ -21,6 +22,7 @@ public class User {
         this.searchResult = new ArrayList<>();
         this.player = new Player();
         this.playlists = new ArrayList<>();
+        this.listenedPodcasts = new ArrayList<>();
     }
 
     /* Getters and Setters */
@@ -59,5 +61,8 @@ public class User {
     }
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
+    }
+    public ArrayList<Podcast> getListenedPodcasts() {
+        return listenedPodcasts;
     }
 }

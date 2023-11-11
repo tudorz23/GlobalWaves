@@ -31,6 +31,17 @@ public class Playlist extends Audio {
         return copy;
     }
 
+    @Override
+    public void simulateTimePass(Player player, int currTime) {
+        // TODO
+    }
+
+    @Override
+    public int getRemainedTime() {
+        // TODO
+        return 0;
+    }
+
     /**
      * Adds a song to the playlist.
      */

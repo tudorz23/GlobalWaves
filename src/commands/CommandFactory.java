@@ -45,6 +45,12 @@ public class CommandFactory {
             case LOAD -> {
                 return new LoadCommand(session, commandInput, user, output);
             }
+            case PLAY_PAUSE -> {
+                return new PlayPauseCommand(session, commandInput, user, output);
+            }
+            case STATUS -> {
+                return new StatusCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
