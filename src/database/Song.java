@@ -12,9 +12,12 @@ public class Song extends Audio {
     private String genre;
     private Integer releaseYear;
     private String artist;
+    private int timePosition; // song time at last known moment
 
+    /* Constructors */
+    private Song() {
+    }
 
-    /* Constructor */
     public Song(SongInput songInput) {
         super();
         this.setName(songInput.getName());
@@ -28,7 +31,22 @@ public class Song extends Audio {
         setType(AudioType.SONG);
     }
 
+    @Override
+    public Song getDeepCopy() {
+        Song copy = new Song();
+        copy.setName(this.getName());
+        copy.setType(this.getType());
+        copy.setDuration(this.duration);
+        copy.setAlbum(this.album);
+        copy.tags = new ArrayList<>();
+        copy.tags.addAll(this.tags);
+        copy.setLyrics(this.lyrics);
+        copy.setGenre(this.genre);
+        copy.setReleaseYear(this.releaseYear);
+        copy.timePosition = 0;
 
+        return copy;
+    }
 
     /* Getters and Setters */
     public Integer getDuration() {
@@ -72,5 +90,11 @@ public class Song extends Audio {
     }
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+    public int getTimePosition() {
+        return timePosition;
+    }
+    public void setTimePosition(int timePosition) {
+        this.timePosition = timePosition;
     }
 }

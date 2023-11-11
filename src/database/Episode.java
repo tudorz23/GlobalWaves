@@ -6,9 +6,12 @@ public class Episode {
     private String name;
     private Integer duration;
     private String description;
-    private int timePosition; // time of the episode when it was interrupted
+    private int timePosition; // time of the episode at last known moment
 
-    /* Constructor */
+    /* Constructors */
+    private Episode() {
+    }
+
     public Episode(EpisodeInput episodeInput) {
         this.name = episodeInput.getName();
         this.duration = episodeInput.getDuration();
@@ -16,6 +19,18 @@ public class Episode {
         this.timePosition = 0;
     }
 
+    /**
+     * @return Deep copy of the Episode object.
+     */
+    public Episode getDeepCopy() {
+        Episode copy = new Episode();
+        copy.name = this.name;
+        copy.duration = this.duration;
+        copy.description = this.description;
+        copy.timePosition = 0;
+
+        return copy;
+    }
 
     /* Getters and Setters */
     public String getName() {

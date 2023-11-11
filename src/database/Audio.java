@@ -6,14 +6,18 @@ import utils.AudioType;
  * Describes audio objects that can be searched by the user.
  * To be extended by classes Song, Playlist and Podcast.
  */
-public class Audio {
+public abstract class Audio {
     private String name;
     private AudioType type;
 
     /* Constructor */
     public Audio() {
-
     }
+
+    /**
+     * @return Deep copy of Audio object.
+     */
+    public abstract Audio getDeepCopy();
 
     /* Getters and Setters */
     public String getName() {

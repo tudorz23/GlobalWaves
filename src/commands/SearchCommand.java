@@ -29,8 +29,10 @@ public class SearchCommand implements ICommand {
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
 
-        // Clear the old search result.
+        // Clear the old search result, the previous selection and the player.
         user.getSearchResult().clear();
+        user.setSelection(null);
+        user.getPlayer().emptyPlayer();
 
         ISearchStrategy searchStrategy = getSearchStrategy(user);
 
@@ -40,6 +42,9 @@ public class SearchCommand implements ICommand {
         printerSearch.print();
     }
 
+    /**
+     * Factory method to get the appropriate Strategy object for Search Command.
+     */
     private ISearchStrategy getSearchStrategy(User user) {
         switch (commandInput.getType()) {
             case "song" -> {

@@ -9,9 +9,12 @@ import java.util.ArrayList;
 public class Podcast extends Audio {
     private String owner;
     private ArrayList<Episode> episodes;
-    private Episode lastPlaying; // last episode playing before interruption
+    private Episode lastPlaying; // episode playing at last known moment
 
-    /* Constructor */
+    /* Constructors */
+    private Podcast() {
+    }
+
     public Podcast(PodcastInput podcastInput) {
         super();
         this.setName(podcastInput.getName());
@@ -36,6 +39,22 @@ public class Podcast extends Audio {
         return episodeList;
     }
 
+    @Override
+    public Podcast getDeepCopy() {
+        Podcast copy = new Podcast();
+        copy.setName(this.getName());
+        copy.setType(this.getType());
+        copy.owner = this.owner;
+        copy.episodes = new ArrayList<>();
+
+        for (Episode episode : this.episodes) {
+            copy.episodes.add(episode.getDeepCopy());
+        }
+
+        copy.lastPlaying = copy.episodes.get(0);
+
+        return copy;
+    }
 
     /* Getters and Setters */
     public String getOwner() {

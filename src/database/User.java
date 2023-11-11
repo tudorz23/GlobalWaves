@@ -10,6 +10,8 @@ public class User {
     private String city;
     private ArrayList<Audio> searchResult;
     private Audio selection;
+    private Player player;
+    private ArrayList<Playlist> playlists;
 
     /* Constructor */
     public User(UserInput userInput) {
@@ -17,8 +19,9 @@ public class User {
         this.age = userInput.getAge();
         this.city = userInput.getCity();
         this.searchResult = new ArrayList<>();
+        this.player = new Player();
+        this.playlists = new ArrayList<>();
     }
-
 
     /* Getters and Setters */
     public String getUsername() {
@@ -47,5 +50,14 @@ public class User {
     }
     public void setSelection(Audio selection) {
         this.selection = selection;
+    }
+    public Player getPlayer() {
+        return player;
+    }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
     }
 }

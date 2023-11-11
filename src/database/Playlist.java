@@ -19,6 +19,18 @@ public class Playlist extends Audio {
         setType(AudioType.PLAYLIST);
     }
 
+    @Override
+    public Playlist getDeepCopy() {
+        Playlist copy = new Playlist(this.getName(), this.getOwner());
+        copy.songs = new ArrayList<>();
+
+        for (Song song : this.songs) {
+            copy.songs.add(song.getDeepCopy());
+        }
+
+        return copy;
+    }
+
     /**
      * Adds a song to the playlist.
      */

@@ -42,6 +42,9 @@ public class CommandFactory {
             case SELECT -> {
                 return new SelectCommand(session, commandInput, user, output);
             }
+            case LOAD -> {
+                return new LoadCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
