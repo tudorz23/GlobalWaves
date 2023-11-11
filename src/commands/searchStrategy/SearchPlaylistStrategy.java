@@ -31,6 +31,14 @@ public class SearchPlaylistStrategy implements ISearchStrategy {
 
         FiltersInput filtersInput = commandInput.getFilters();
 
+        // Add all visible playlists, then remove those that do not respect the given filters.
+        for (Playlist playlist : session.getDatabase().getPlaylists()) {
+            if (playlist.getVisibility() == Visibility.PUBLIC
+                || playlist.getOwner().equals(user.getUsername())) {
+                searchResult.add(playlist);
+            }
+        }
+
         if (filtersInput.getName() != null) {
             searchPlaylistsByName(searchResult, filtersInput.getName());
         }
@@ -38,46 +46,30 @@ public class SearchPlaylistStrategy implements ISearchStrategy {
         if (filtersInput.getOwner() != null) {
             searchPlaylistsByOwner(searchResult, filtersInput.getOwner());
         }
+
+        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+            searchResult.remove(searchResult.size() - 1);
+        }
     }
 
     private void searchPlaylistsByName(ArrayList<Audio> searchResult, String name) {
-        for (Playlist playlist : session.getDatabase().getPlaylists()) {
-            if (playlist.getName().startsWith(name)) {
-                if (playlist.getOwner().equals(user.getUsername())
-                    || playlist.getVisibility() == Visibility.PUBLIC) {
-                    searchResult.add(playlist);
-                }
-            }
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Playlist playlist = (Playlist) iterator.next();
 
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!playlist.getName().startsWith(name)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchPlaylistsByOwner(ArrayList<Audio> searchResult, String owner) {
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Playlist playlist = (Playlist) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Playlist playlist = (Playlist) iterator.next();
 
-                if (!playlist.getOwner().equals(owner)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Playlist playlist : session.getDatabase().getPlaylists()) {
-            if (playlist.getOwner().equals(owner)) {
-                if (playlist.getOwner().equals(user.getUsername())
-                    || playlist.getVisibility() == Visibility.PUBLIC) {
-                    searchResult.add(playlist);
-                }
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!playlist.getOwner().equals(owner)) {
+                iterator.remove();
             }
         }
     }

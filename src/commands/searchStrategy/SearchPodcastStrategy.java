@@ -29,6 +29,9 @@ public class SearchPodcastStrategy implements ISearchStrategy {
 
         FiltersInput filtersInput = commandInput.getFilters();
 
+        // Add all podcasts, then remove those that do not respect the given filters.
+        searchResult.addAll(session.getDatabase().getPodcasts());
+
         if (filtersInput.getName() != null) {
             searchPodcastsByName(searchResult, filtersInput.getName());
         }
@@ -36,54 +39,30 @@ public class SearchPodcastStrategy implements ISearchStrategy {
         if (filtersInput.getOwner() != null) {
             searchPodcastsByOwner(searchResult, filtersInput.getOwner());
         }
+
+        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+            searchResult.remove(searchResult.size() - 1);
+        }
     }
 
     private void searchPodcastsByName(ArrayList<Audio> searchResult, String name) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Podcast podcast = (Podcast) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Podcast podcast = (Podcast) iterator.next();
 
-                if (!podcast.getName().startsWith(name)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Podcast podcast : session.getDatabase().getPodcasts()) {
-            if (podcast.getName().startsWith(name)) {
-                searchResult.add(podcast);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!podcast.getName().startsWith(name)) {
+                iterator.remove();
             }
         }
     }
 
     private void searchPodcastsByOwner(ArrayList<Audio> searchResult, String owner) {
-        // If there were another criteria applied.
-        if (!searchResult.isEmpty()) {
-            Iterator<Audio> iterator = searchResult.iterator();
-            while (iterator.hasNext()) {
-                Podcast podcast = (Podcast) iterator.next();
+        Iterator<Audio> iterator = searchResult.iterator();
+        while (iterator.hasNext()) {
+            Podcast podcast = (Podcast) iterator.next();
 
-                if (!podcast.getOwner().equals(owner)) {
-                    iterator.remove();
-                }
-            }
-            return;
-        }
-
-        for (Podcast podcast : session.getDatabase().getPodcasts()) {
-            if (podcast.getOwner().equals(owner)) {
-                searchResult.add(podcast);
-            }
-
-            if (searchResult.size() == SEARCH_MAX_RES_SIZE) {
-                return;
+            if (!podcast.getOwner().equals(owner)) {
+                iterator.remove();
             }
         }
     }
