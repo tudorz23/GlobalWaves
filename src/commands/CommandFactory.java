@@ -30,7 +30,7 @@ public class CommandFactory {
 
         switch (commandType) {
             case SEARCH -> {
-                return new SearchCommand(session, output);
+                return new SearchCommand(session, commandInput, output);
             }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");

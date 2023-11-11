@@ -6,13 +6,14 @@ public class Database {
     private ArrayList<Song> songs;
     private ArrayList<Podcast> podcasts;
     private ArrayList<User> users;
-
+    private ArrayList<Playlist> playlists;
 
     /* Constructor */
     public Database() {
         this.songs = new ArrayList<>();
         this.podcasts = new ArrayList<>();
         this.users = new ArrayList<>();
+        this.playlists = new ArrayList<>();
     }
 
     /**
@@ -33,6 +34,14 @@ public class Database {
         users.add(user);
     }
 
+    public void addPlaylist(Playlist playlist) {
+        playlists.add(playlist);
+    }
+
+    public void removePlaylist(Playlist playlist) {
+        playlists.remove(playlist);
+    }
+
     /* Getters and Setters */
     public ArrayList<Song> getSongs() {
         return songs;
@@ -42,5 +51,8 @@ public class Database {
     }
     public ArrayList<User> getUsers() {
         return users;
+    }
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
     }
 }
