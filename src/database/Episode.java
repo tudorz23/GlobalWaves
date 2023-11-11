@@ -6,15 +6,15 @@ public class Episode {
     private String name;
     private Integer duration;
     private String description;
-
+    private int timePosition; // time of the episode when it was interrupted
 
     /* Constructor */
     public Episode(EpisodeInput episodeInput) {
         this.name = episodeInput.getName();
         this.duration = episodeInput.getDuration();
         this.description = episodeInput.getDescription();
+        this.timePosition = 0;
     }
-
 
 
     /* Getters and Setters */
@@ -35,5 +35,11 @@ public class Episode {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public int getTimePosition() {
+        return timePosition;
+    }
+    public void setTimePosition(int timePosition) {
+        this.timePosition = timePosition;
     }
 }

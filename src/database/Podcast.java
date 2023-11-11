@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Podcast extends Audio {
     private String owner;
     private ArrayList<Episode> episodes;
+    private Episode lastPlaying; // last episode playing before interruption
 
     /* Constructor */
     public Podcast(PodcastInput podcastInput) {
@@ -17,6 +18,7 @@ public class Podcast extends Audio {
         this.owner = podcastInput.getOwner();
         this.episodes = initializeEpisodes(podcastInput.getEpisodes());
         setType(AudioType.PODCAST);
+        this.lastPlaying = episodes.get(0);
     }
 
     /**
@@ -47,5 +49,11 @@ public class Podcast extends Audio {
     }
     public void setEpisodes(ArrayList<Episode> episodes) {
         this.episodes = episodes;
+    }
+    public Episode getLastPlaying() {
+        return lastPlaying;
+    }
+    public void setLastPlaying(Episode lastPlaying) {
+        this.lastPlaying = lastPlaying;
     }
 }
