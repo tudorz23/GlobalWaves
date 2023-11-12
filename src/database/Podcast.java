@@ -102,15 +102,8 @@ public class Podcast extends Audio {
 
         if (playingEpisodeIdx == episodes.size() - 1
             && player.getRepeatState() == RepeatState.REPEAT_ONCE) {
-            if (player.hasRepeatedOnce()) {
-                // If it already repeated once, stop the player.
-                Episode currEpisode = episodes.get(playingEpisodeIdx);
-                currEpisode.setTimePosition(currEpisode.getDuration());
-                player.setPlayerState(PlayerState.STOPPED);
-                return;
-            }
-
-            player.setRepeatedOnce(true);
+            // Set repeat State to No repeat and continue.
+            player.setRepeatState(RepeatState.NO_REPEAT);
         }
 
         // Surely, it is either not last episode or Repeat is enabled.

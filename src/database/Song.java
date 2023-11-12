@@ -99,21 +99,15 @@ public class Song extends Audio {
         }
 
         if (quotient == 1) {
-            if (player.hasRepeatedOnce()) {
-                // It already repeated once.
-                player.setPlayerState(PlayerState.STOPPED);
-                timePosition = duration;
-                return;
-            }
-
-            // Repeat it once and set the flag.
-            player.setRepeatedOnce(true);
+            // Repeat it once and set repeat state to No repeat.
+            player.setRepeatState(RepeatState.NO_REPEAT);
             timePosition = remainder;
             return;
         }
 
         // quotient > 1. Surely, the player needs to be stopped.
         player.setPlayerState(PlayerState.STOPPED);
+        player.setRepeatState(RepeatState.NO_REPEAT);
         timePosition = duration;
     }
 

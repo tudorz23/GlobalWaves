@@ -41,10 +41,7 @@ public class RepeatCommand implements ICommand {
         RepeatState newRepeatState = RepeatState.cycleState(currRepeatState);
 
         userPlayer.setRepeatState(newRepeatState);
-        if (newRepeatState == RepeatState.REPEAT_ONCE) {
-            userPlayer.setRepeatedOnce(false);
-        }
 
-        printer.print("Repeat mode changed to " + newRepeatState.getLabel() + ".");
+        printer.print("Repeat mode changed to " + newRepeatState.getLabel().toLowerCase() + ".");
     }
 }

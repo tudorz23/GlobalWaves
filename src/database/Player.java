@@ -8,7 +8,6 @@ public class Player {
     private PlayerState playerState;
     private RepeatState repeatState;
     private int prevTimeInfo; // previous time when internal states where updated
-    private boolean repeatedOnce; // to know if repeated once has been done
     private boolean shuffle;
 
     /* Constructor */
@@ -60,12 +59,6 @@ public class Player {
     }
     public void setPrevTimeInfo(int prevTimeInfo) {
         this.prevTimeInfo = prevTimeInfo;
-    }
-    public boolean hasRepeatedOnce() {
-        return repeatedOnce;
-    }
-    public void setRepeatedOnce(boolean repeatedOnce) {
-        this.repeatedOnce = repeatedOnce;
     }
     public boolean isShuffle() {
         return shuffle;
