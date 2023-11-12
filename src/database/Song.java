@@ -48,6 +48,7 @@ public class Song extends Audio {
         copy.setLyrics(this.lyrics);
         copy.setGenre(this.genre);
         copy.setReleaseYear(this.releaseYear);
+        copy.setArtist(this.artist);
         copy.timePosition = 0;
         copy.likeCnt = this.likeCnt;
 

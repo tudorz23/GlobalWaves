@@ -3,6 +3,7 @@ package commands;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Player;
+import database.Playlist;
 import database.Song;
 import database.User;
 import fileio.input.CommandInput;
@@ -36,12 +37,20 @@ public class LikeCommand implements ICommand {
             return;
         }
 
-        if (userPlayer.getCurrPlaying().getType() != AudioType.SONG) {
+        if (userPlayer.getCurrPlaying().getType() == AudioType.PODCAST) {
             printer.print("Loaded source is not a song.");
             return;
         }
 
-        Song playerSong = (Song) userPlayer.getCurrPlaying();
+        Song playerSong;
+
+        if (userPlayer.getCurrPlaying().getType() == AudioType.SONG) {
+            playerSong = (Song) userPlayer.getCurrPlaying();
+        } else {
+            Playlist currPlaylist = (Playlist) (userPlayer.getCurrPlaying());
+            playerSong = (Song) (currPlaylist.getSongs().get(currPlaylist.getPlayingSongIndex()));
+        }
+
         Song song = session.getDatabase().searchSongInDatabase(playerSong);
 
         if (song == null) {

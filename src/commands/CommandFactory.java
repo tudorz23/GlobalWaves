@@ -63,6 +63,9 @@ public class CommandFactory {
             case SHOW_PLAYLISTS -> {
                 return new ShowPlaylistsCommand(session, commandInput, user, output);
             }
+            case SHOW_PREFERRED_SONGS -> {
+                return new ShowPreferredSongsCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }

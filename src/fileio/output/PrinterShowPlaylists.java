@@ -30,6 +30,8 @@ public class PrinterShowPlaylists extends Printer {
             result.add(createPlaylistNode(playlist));
         }
 
+        commandNode.set("result", result);
+
         output.add(commandNode);
     }
 
