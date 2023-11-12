@@ -57,6 +57,9 @@ public class CommandFactory {
             case ADD_REMOVE_IN_PLAYLIST -> {
                 return new AddRemoveInPlaylistCommand(session, commandInput, user, output);
             }
+            case LIKE -> {
+                return new LikeCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }

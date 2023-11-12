@@ -13,6 +13,7 @@ public class User {
     private Player player;
     private ArrayList<Playlist> playlists;
     private ArrayList<Podcast> listenedPodcasts;
+    private ArrayList<Song> likedSongs;
 
     /* Constructor */
     public User(UserInput userInput) {
@@ -23,6 +24,7 @@ public class User {
         this.player = new Player();
         this.playlists = new ArrayList<>();
         this.listenedPodcasts = new ArrayList<>();
+        this.likedSongs = new ArrayList<>();
     }
 
     /**
@@ -39,6 +41,14 @@ public class User {
 
         playlists.add(newPlaylist);
         return true;
+    }
+
+    public void addLikedSong(Song song) {
+        likedSongs.add(song);
+    }
+
+    public void removeLikedSong(Song song) {
+        likedSongs.remove(song);
     }
 
     /* Getters and Setters */
@@ -80,5 +90,8 @@ public class User {
     }
     public ArrayList<Podcast> getListenedPodcasts() {
         return listenedPodcasts;
+    }
+    public ArrayList<Song> getLikedSongs() {
+        return likedSongs;
     }
 }

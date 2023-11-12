@@ -16,6 +16,7 @@ public class Song extends Audio {
     private Integer releaseYear;
     private String artist;
     private int timePosition; // song time at last known moment
+    private int likeCnt;
 
     /* Constructors */
     private Song() {
@@ -32,6 +33,7 @@ public class Song extends Audio {
         this.releaseYear = songInput.getReleaseYear();
         this.artist = songInput.getArtist();
         setType(AudioType.SONG);
+        likeCnt = 0;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class Song extends Audio {
         copy.setGenre(this.genre);
         copy.setReleaseYear(this.releaseYear);
         copy.timePosition = 0;
+        copy.likeCnt = this.likeCnt;
 
         return copy;
     }
@@ -184,5 +187,11 @@ public class Song extends Audio {
     }
     public void setTimePosition(int timePosition) {
         this.timePosition = timePosition;
+    }
+    public int getLikeCnt() {
+        return likeCnt;
+    }
+    public void setLikeCnt(int likeCnt) {
+        this.likeCnt = likeCnt;
     }
 }
