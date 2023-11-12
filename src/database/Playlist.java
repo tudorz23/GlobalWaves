@@ -11,6 +11,7 @@ public class Playlist extends Audio {
     private Visibility visibility;
     private ArrayList<Song> songs;
     private int playingSongIndex;
+    private int followersCnt;
 
     /* Constructor */
     public Playlist(String name, String owner) {
@@ -20,6 +21,7 @@ public class Playlist extends Audio {
         this.visibility = Visibility.PUBLIC;
         this.songs = new ArrayList<>();
         setType(AudioType.PLAYLIST);
+        followersCnt = 0;
     }
 
     @Override
@@ -32,6 +34,7 @@ public class Playlist extends Audio {
         }
 
         copy.playingSongIndex = 0;
+        copy.followersCnt = this.followersCnt;
         return copy;
     }
 
@@ -142,5 +145,11 @@ public class Playlist extends Audio {
     }
     public void setPlayingSongIndex(int playingSongIndex) {
         this.playingSongIndex = playingSongIndex;
+    }
+    public int getFollowersCnt() {
+        return followersCnt;
+    }
+    public void setFollowersCnt(int followersCnt) {
+        this.followersCnt = followersCnt;
     }
 }

@@ -60,6 +60,9 @@ public class CommandFactory {
             case LIKE -> {
                 return new LikeCommand(session, commandInput, user, output);
             }
+            case SHOW_PLAYLISTS -> {
+                return new ShowPlaylistsCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
