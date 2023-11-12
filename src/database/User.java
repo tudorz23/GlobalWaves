@@ -8,7 +8,7 @@ public class User {
     private String username;
     private int age;
     private String city;
-    private ArrayList<Audio> searchResult;
+    private ArrayList<Audio> searchResult;  // null when no search has been done
     private Audio selection;
     private Player player;
     private ArrayList<Playlist> playlists;
@@ -21,7 +21,7 @@ public class User {
         this.username = userInput.getUsername();
         this.age = userInput.getAge();
         this.city = userInput.getCity();
-        this.searchResult = new ArrayList<>();
+        this.searchResult = null;
         this.player = new Player();
         this.playlists = new ArrayList<>();
         this.listenedPodcasts = new ArrayList<>();
@@ -82,6 +82,9 @@ public class User {
     }
     public ArrayList<Audio> getSearchResult() {
         return searchResult;
+    }
+    public void setSearchResult(ArrayList<Audio> searchResult) {
+        this.searchResult = searchResult;
     }
     public Audio getSelection() {
         return selection;

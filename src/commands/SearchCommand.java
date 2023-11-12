@@ -11,6 +11,8 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterSearch;
 import utils.PlayerState;
 
+import java.util.ArrayList;
+
 public class SearchCommand implements ICommand {
     private Session session;
     private CommandInput commandInput;
@@ -34,7 +36,7 @@ public class SearchCommand implements ICommand {
         }
 
         // Clear the old search result, the previous selection and the player.
-        user.getSearchResult().clear();
+        user.setSearchResult(new ArrayList<>());
         user.setSelection(null);
         user.getPlayer().emptyPlayer();
 

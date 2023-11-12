@@ -56,7 +56,7 @@ public class LoadCommand implements ICommand {
         }
 
         user.setSelection(null);
-        user.getSearchResult().clear();
+        user.setSearchResult(null);
         printerLoad.print("Playback loaded successfully.");
     }
 

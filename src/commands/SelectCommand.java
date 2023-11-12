@@ -27,7 +27,7 @@ public class SelectCommand implements ICommand {
 
         PrinterSelect printerSelect = new PrinterSelect(user, session, output);
 
-        if (user.getSearchResult().isEmpty()) {
+        if (user.getSearchResult() == null) {
             printerSelect.print("Please conduct a search before making a selection.");
             return;
         }
