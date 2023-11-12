@@ -82,21 +82,16 @@ public class LoadCommand implements ICommand {
      * that respective object is loaded. Else, a new deep copy is created and loaded.
      */
     public void loadPodcast(Player player, Podcast podcast) {
-        boolean alreadyListened = false;
-
         for (Podcast listenedPodcast : user.getListenedPodcasts()) {
             if (listenedPodcast.getName().equals(podcast.getName())) {
                 player.setCurrPlaying(listenedPodcast);
-                alreadyListened = true;
-                break;
+                return;
             }
         }
 
         // If it has not been listened to, add a deep copy of it.
-        if (!alreadyListened) {
-            Podcast deepCopy = podcast.getDeepCopy();
-            player.setCurrPlaying(deepCopy);
-            user.getListenedPodcasts().add(deepCopy);
-        }
+        Podcast deepCopy = podcast.getDeepCopy();
+        player.setCurrPlaying(deepCopy);
+        user.getListenedPodcasts().add(deepCopy);
     }
 }
