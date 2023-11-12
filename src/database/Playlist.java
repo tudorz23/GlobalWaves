@@ -12,6 +12,7 @@ public class Playlist extends Audio {
     private ArrayList<Song> songs;
     private int playingSongIndex;
     private int followersCnt;
+    private ArrayList<Integer> shuffleArray;
 
     /* Constructor */
     public Playlist(String name, String owner) {
@@ -35,6 +36,12 @@ public class Playlist extends Audio {
 
         copy.playingSongIndex = 0;
         copy.followersCnt = this.followersCnt;
+
+        copy.shuffleArray = new ArrayList<>();
+        for (int i = 0; i < songs.size(); i++) {
+            copy.shuffleArray.add((i));
+        }
+
         return copy;
     }
 
@@ -64,7 +71,12 @@ public class Playlist extends Audio {
             }
 
             if (songRemainedTime <= elapsedTime) {
-                changeToNextSong(player);
+                if (!player.isShuffle()) {
+                    changeToNextSong(player);
+                } else {
+                    changeToNextSongShuffle(player);
+                }
+
                 elapsedTime -= songRemainedTime;
                 continue;
             }
@@ -96,6 +108,41 @@ public class Playlist extends Audio {
     }
 
     /**
+     * Moves to the next song in the playlist if it is shuffled.
+     */
+    private void changeToNextSongShuffle(Player player) {
+        int shuffleIndex = getShuffleIndex(playingSongIndex);
+
+        if (shuffleIndex == shuffleArray.size() - 1
+                && player.getRepeatState() == RepeatState.NO_REPEAT_PLAYLIST) {
+            // If No repeat is enabled and last song is reached, stop the player.
+            Song currSong = songs.get(playingSongIndex);
+            currSong.setTimePosition(currSong.getDuration());
+            player.setPlayerState(PlayerState.STOPPED);
+            player.setShuffle(false);
+            return;
+        }
+
+        // Surely, it is either not last song or Repeat all is enabled.
+        int nextShuffleIdx = (shuffleIndex + 1) % (shuffleArray.size());
+        int nextSongIndex = shuffleArray.get(nextShuffleIdx);
+
+        this.playingSongIndex = nextSongIndex;
+        Song newSong = songs.get(nextSongIndex);
+        newSong.setTimePosition(0);
+    }
+
+    private int getShuffleIndex(int playingSongIndex) {
+        for (int i = 0; i < shuffleArray.size(); i++) {
+            if (shuffleArray.get(i) == playingSongIndex) {
+                return i;
+            }
+        }
+        // Never reached.
+        return -1;
+    }
+
+    /**
      * Sets the new Time position for the currently playing song.
      */
     private void simulateRepeatCurrSong(Player player, int elapsedTime) {
@@ -106,7 +153,6 @@ public class Playlist extends Audio {
 
     @Override
     public int getRemainedTime() {
-        // TODO
         Song currPlayingSong = songs.get(playingSongIndex);
         return currPlayingSong.getRemainedTime();
     }
@@ -152,5 +198,13 @@ public class Playlist extends Audio {
     }
     public void setFollowersCnt(int followersCnt) {
         this.followersCnt = followersCnt;
+    }
+
+    public ArrayList<Integer> getShuffleArray() {
+        return shuffleArray;
+    }
+
+    public void setShuffleArray(ArrayList<Integer> shuffleArray) {
+        this.shuffleArray = shuffleArray;
     }
 }
