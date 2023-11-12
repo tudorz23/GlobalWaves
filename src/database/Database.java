@@ -42,6 +42,21 @@ public class Database {
         playlists.remove(playlist);
     }
 
+    /**
+     * Traverses the song database and returns the instance of the
+     * requested song, if it exists.
+     * @return song instance for success, null otherwise.
+     */
+    public Song searchSongInDatabase(Song reqSong) {
+        for (Song song : songs) {
+            if (song.getName().equals(reqSong.getName())
+                && song.getArtist().equals(reqSong.getArtist())) {
+                return song;
+            }
+        }
+        return null;
+    }
+
     /* Getters and Setters */
     public ArrayList<Song> getSongs() {
         return songs;
