@@ -3,8 +3,8 @@ package fileio.output;
 import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import database.Player;
-import database.User;
+import database.*;
+import utils.AudioType;
 import utils.PlayerState;
 
 public class PrinterStatus extends Printer {
@@ -25,18 +25,30 @@ public class PrinterStatus extends Printer {
 
         Player userPlayer = user.getPlayer();
 
+        ObjectNode stats = mapper.createObjectNode();
+
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {
-            commandNode.set("stats", null);
+            stats.put("name" , "");
+            stats.put("remainedTime", 0);
+            stats.put("repeat", "No Repeat");
+            stats.put("shuffle", false);
+            stats.put("paused", true);
+
+            commandNode.set("stats", stats);
             output.add(commandNode);
             return;
         }
 
-        ObjectNode stats = mapper.createObjectNode();
-
         if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
             stats.put("name", "");
         } else {
-            stats.put("name", userPlayer.getCurrPlaying().getName());
+            if (userPlayer.getCurrPlaying().getType() == AudioType.SONG) {
+                stats.put("name", userPlayer.getCurrPlaying().getName());
+            } else if (userPlayer.getCurrPlaying().getType() == AudioType.PODCAST) {
+                printNamePodcast(stats, userPlayer);
+            } else {
+                printNamePlaylist(stats, userPlayer);
+            }
         }
 
         stats.put("remainedTime", userPlayer.getCurrPlaying().getRemainedTime());
@@ -49,5 +61,23 @@ public class PrinterStatus extends Printer {
         commandNode.set("stats", stats);
 
         output.add(commandNode);
+    }
+
+    private void printNamePodcast(ObjectNode stats, Player player) {
+        Podcast playingPodcast = (Podcast) player.getCurrPlaying();
+        int episodeIdx = playingPodcast.getPlayingEpisodeIdx();
+
+        Episode playingEpisode = playingPodcast.getEpisodes().get(episodeIdx);
+
+        stats.put("name", playingEpisode.getName());
+    }
+
+    private void printNamePlaylist(ObjectNode stats, Player player) {
+        Playlist currPlaylist = (Playlist) player.getCurrPlaying();
+        int songIdx = currPlaylist.getPlayingSongIndex();
+
+        Song playingSong = currPlaylist.getSongs().get(songIdx);
+
+        stats.put("name", playingSong.getName());
     }
 }

@@ -57,6 +57,7 @@ public class LoadCommand implements ICommand {
 
         userPlayer.setRepeatedOnce(false);
 
+        user.setSelection(null);
         printerLoad.print("Playback loaded successfully.");
     }
 

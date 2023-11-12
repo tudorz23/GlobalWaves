@@ -122,8 +122,8 @@ public class Podcast extends Audio {
 
     @Override
     public int getRemainedTime() {
-        // TODO
-        return 0;
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+        return playingEpisode.getRemainedTime();
     }
 
     /* Getters and Setters */

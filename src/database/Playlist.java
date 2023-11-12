@@ -107,7 +107,8 @@ public class Playlist extends Audio {
     @Override
     public int getRemainedTime() {
         // TODO
-        return 0;
+        Song currPlayingSong = songs.get(playingSongIndex);
+        return currPlayingSong.getRemainedTime();
     }
 
     /**

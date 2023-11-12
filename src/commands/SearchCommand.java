@@ -9,6 +9,7 @@ import commands.searchStrategy.SearchSongStrategy;
 import database.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterSearch;
+import utils.PlayerState;
 
 public class SearchCommand implements ICommand {
     private Session session;
@@ -28,6 +29,9 @@ public class SearchCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
+        if (user.getPlayer() != null && user.getPlayer().getPlayerState() != PlayerState.EMPTY) {
+            user.getPlayer().simulateTimePass(session.getTimestamp());
+        }
 
         // Clear the old search result, the previous selection and the player.
         user.getSearchResult().clear();

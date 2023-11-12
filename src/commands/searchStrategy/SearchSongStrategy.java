@@ -104,10 +104,20 @@ public class SearchSongStrategy implements ISearchStrategy {
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
 
-            if (!song.getLyrics().contains(lyrics)) {
+            if (!stringContainsCaseInsensitive(song.getLyrics(), lyrics)) {
                 iterator.remove();
             }
         }
+    }
+
+    /**
+     * Checks if str1 contains str2, case-insensitive.
+     * @return true if it does, false otherwise.
+     */
+    private boolean stringContainsCaseInsensitive(String str1, String str2) {
+        String copy1 = str1.toLowerCase();
+        String copy2 = str2.toLowerCase();
+        return (copy1.contains(copy2));
     }
 
     private void searchSongsByGenre(ArrayList<Audio> searchResult, String genre) {
