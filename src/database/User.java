@@ -25,6 +25,22 @@ public class User {
         this.listenedPodcasts = new ArrayList<>();
     }
 
+    /**
+     * Adds a new Playlist to user's playlists.
+     * @return true, for success, false, if a playlist with the
+     * same name already exists in user's list.
+     */
+    public boolean addPlaylist(Playlist newPlaylist) {
+        for (Playlist playlist : playlists) {
+            if (playlist.getName().equals(newPlaylist.getName())) {
+                return false;
+            }
+        }
+
+        playlists.add(newPlaylist);
+        return true;
+    }
+
     /* Getters and Setters */
     public String getUsername() {
         return username;

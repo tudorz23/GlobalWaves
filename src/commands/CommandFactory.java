@@ -51,6 +51,9 @@ public class CommandFactory {
             case STATUS -> {
                 return new StatusCommand(session, commandInput, user, output);
             }
+            case CREATE_PLAYLIST -> {
+                return new CreatePlaylistCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
