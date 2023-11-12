@@ -25,7 +25,20 @@ public abstract class Audio {
      */
     public abstract void simulateTimePass(Player player, int currTime);
 
+    /**
+     * @return Time remained until track ends.
+     */
     public abstract int getRemainedTime();
+
+    /**
+     * Moves the player to the next track.
+     */
+    public abstract void next(Player player);
+
+    /**
+     * @return Name of the currently playing track.
+     */
+    public abstract String getPlayingTrackName();
 
     /* Getters and Setters */
     public String getName() {

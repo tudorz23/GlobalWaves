@@ -157,6 +157,22 @@ public class Playlist extends Audio {
         return currPlayingSong.getRemainedTime();
     }
 
+    @Override
+    public void next(Player player) {
+        if (!player.isShuffle()) {
+            changeToNextSong(player);
+            return;
+        }
+
+        changeToNextSongShuffle(player);
+    }
+
+    @Override
+    public String getPlayingTrackName() {
+        Song currPlayingSong = songs.get(playingSongIndex);
+        return currPlayingSong.getName();
+    }
+
     /**
      * Adds a song to the playlist.
      */
@@ -199,11 +215,9 @@ public class Playlist extends Audio {
     public void setFollowersCnt(int followersCnt) {
         this.followersCnt = followersCnt;
     }
-
     public ArrayList<Integer> getShuffleArray() {
         return shuffleArray;
     }
-
     public void setShuffleArray(ArrayList<Integer> shuffleArray) {
         this.shuffleArray = shuffleArray;
     }

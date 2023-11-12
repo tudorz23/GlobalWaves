@@ -119,6 +119,17 @@ public class Podcast extends Audio {
         return playingEpisode.getRemainedTime();
     }
 
+    @Override
+    public void next(Player player) {
+        changeToNextEpisode(player);
+    }
+
+    @Override
+    public String getPlayingTrackName() {
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+        return playingEpisode.getName();
+    }
+
     /* Getters and Setters */
     public String getOwner() {
         return owner;

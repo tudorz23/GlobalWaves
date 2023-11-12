@@ -28,12 +28,7 @@ public class PrinterStatus extends Printer {
         ObjectNode stats = mapper.createObjectNode();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {
-            stats.put("name" , "");
-            stats.put("remainedTime", 0);
-            stats.put("repeat", "No Repeat");
-            stats.put("shuffle", false);
-            stats.put("paused", true);
-
+            printEmptyPlayer(stats);
             commandNode.set("stats", stats);
             output.add(commandNode);
             return;
@@ -42,13 +37,8 @@ public class PrinterStatus extends Printer {
         if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
             stats.put("name", "");
         } else {
-            if (userPlayer.getCurrPlaying().getType() == AudioType.SONG) {
-                stats.put("name", userPlayer.getCurrPlaying().getName());
-            } else if (userPlayer.getCurrPlaying().getType() == AudioType.PODCAST) {
-                printNamePodcast(stats, userPlayer);
-            } else {
-                printNamePlaylist(stats, userPlayer);
-            }
+            String trackName = userPlayer.getCurrPlaying().getPlayingTrackName();
+            stats.put("name", trackName);
         }
 
         stats.put("remainedTime", userPlayer.getCurrPlaying().getRemainedTime());
@@ -63,21 +53,11 @@ public class PrinterStatus extends Printer {
         output.add(commandNode);
     }
 
-    private void printNamePodcast(ObjectNode stats, Player player) {
-        Podcast playingPodcast = (Podcast) player.getCurrPlaying();
-        int episodeIdx = playingPodcast.getPlayingEpisodeIdx();
-
-        Episode playingEpisode = playingPodcast.getEpisodes().get(episodeIdx);
-
-        stats.put("name", playingEpisode.getName());
-    }
-
-    private void printNamePlaylist(ObjectNode stats, Player player) {
-        Playlist currPlaylist = (Playlist) player.getCurrPlaying();
-        int songIdx = currPlaylist.getPlayingSongIndex();
-
-        Song playingSong = currPlaylist.getSongs().get(songIdx);
-
-        stats.put("name", playingSong.getName());
+    private void printEmptyPlayer(ObjectNode stats) {
+        stats.put("name" , "");
+        stats.put("remainedTime", 0);
+        stats.put("repeat", "No Repeat");
+        stats.put("shuffle", false);
+        stats.put("paused", true);
     }
 }

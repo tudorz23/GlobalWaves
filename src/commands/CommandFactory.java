@@ -72,6 +72,9 @@ public class CommandFactory {
             case SHUFFLE -> {
                 return new ShuffleCommand(session, commandInput, user, output);
             }
+            case NEXT -> {
+                return new NextCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }

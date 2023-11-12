@@ -134,6 +134,17 @@ public class Song extends Audio {
         return (duration - timePosition);
     }
 
+    @Override
+    public void next(Player player) {
+        player.setPlayerState(PlayerState.STOPPED);
+        timePosition = duration;
+    }
+
+    @Override
+    public String getPlayingTrackName() {
+        return getName();
+    }
+
     /* Getters and Setters */
     public Integer getDuration() {
         return duration;
