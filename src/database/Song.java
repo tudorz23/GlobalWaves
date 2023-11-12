@@ -53,59 +53,82 @@ public class Song extends Audio {
 
     @Override
     public void simulateTimePass(Player player, int currTime) {
-        int remainingTime = duration - timePosition;
-        int elapsedTime = currTime - player.getPrevTimeInfo();
-
-        player.setPrevTimeInfo(currTime);
-
         if (player.getPlayerState() == PlayerState.PAUSED
             || player.getPlayerState() == PlayerState.STOPPED) {
             return;
         }
 
-        if (remainingTime < elapsedTime) {
-            int timeAfterComplete = elapsedTime - remainingTime;
-            int quotient = timeAfterComplete / duration;
-            int remainder = timeAfterComplete % duration;
+        int elapsedTime = currTime - player.getPrevTimeInfo();
 
-            if (player.getRepeatState() == RepeatState.NO_REPEAT) {
-                timePosition = duration;
-                player.setPlayerState(PlayerState.STOPPED);
-                return;
-            }
+        if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
+            simulateRepeatInfinite(elapsedTime);
+            return;
+        }
 
-            if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
-                if (quotient > 1) {
-                    // Surely, it was repeated at least once.
-                    player.setPlayerState(PlayerState.STOPPED);
-                    return;
-                }
+        if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
+            simulateRepeatOnce(player, elapsedTime);
+            return;
+        }
 
-                if (player.hasRepeatedOnce()) {
-                    // It already repeated.
-                    player.setPlayerState(PlayerState.STOPPED);
-                    return;
-                }
+        simulateNoRepeat(player, elapsedTime);
+    }
 
-                // Didn't repeat once.
-                player.setRepeatedOnce(true);
-                timePosition = remainder;
-                return;
-            }
+    /**
+     * Simulates the time passing when Repeat Infinite is on.
+     */
+    private void simulateRepeatInfinite(int elapsedTime) {
+        int newTimePos = (timePosition + elapsedTime) % duration;
+        timePosition = newTimePos;
+    }
 
-            // Repeat infinite
+    /**
+     * Simulates the time passing when Repeat Once is on.
+     */
+    private void simulateRepeatOnce(Player player, int elapsedTime) {
+        int quotient = (timePosition + elapsedTime) / duration;
+        int remainder = (timePosition + elapsedTime) % duration;
+
+        if (quotient == 0) {
+            // No repeat necessary.
             timePosition = remainder;
             return;
         }
 
-        if (remainingTime == elapsedTime) {
-            timePosition = duration;
-            player.setPlayerState(PlayerState.STOPPED);
+        if (quotient == 1) {
+            if (player.hasRepeatedOnce()) {
+                // It already repeated once.
+                player.setPlayerState(PlayerState.STOPPED);
+                timePosition = duration;
+                return;
+            }
+
+            // Repeat it once and set the flag.
+            player.setRepeatedOnce(true);
+            timePosition = remainder;
             return;
         }
 
-        // The song did not finish.
-        timePosition += elapsedTime;
+        // quotient > 1. Surely, the player needs to be stopped.
+        player.setPlayerState(PlayerState.STOPPED);
+        timePosition = duration;
+    }
+
+    /**
+     * Simulates the time passing when No repeat is on.
+     */
+    private void simulateNoRepeat(Player player, int elapsedTime) {
+        int quotient = (timePosition + elapsedTime) / duration;
+        int remainder = (timePosition + elapsedTime) % duration;
+
+        if (quotient == 0) {
+            // Song did not end.
+            timePosition = remainder;
+            return;
+        }
+
+        // Surely, song ended.
+        player.setPlayerState(PlayerState.STOPPED);
+        timePosition = duration;
     }
 
     @Override

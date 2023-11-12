@@ -32,6 +32,10 @@ public class Episode {
         return copy;
     }
 
+    public int getRemainedTime() {
+        return (duration - timePosition);
+    }
+
     /* Getters and Setters */
     public String getName() {
         return name;

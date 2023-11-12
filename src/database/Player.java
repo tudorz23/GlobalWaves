@@ -24,8 +24,16 @@ public class Player {
         playerState = PlayerState.EMPTY;
     }
 
+    /**
+     * Simulates the passing of the time between two interactions with the player,
+     * updating its internal states.
+     * @param currTime Current timestamp of the query.
+     */
     public void simulateTimePass(int currTime) {
         currPlaying.simulateTimePass(this, currTime);
+
+        // Update previous time from the player.
+        this.setPrevTimeInfo(currTime);
     }
 
     /* Getters and Setters */
