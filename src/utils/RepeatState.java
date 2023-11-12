@@ -23,7 +23,7 @@ public enum RepeatState {
      * @param prevState State before cycling.
      * @return Following state.
      */
-    public RepeatState cycleState(RepeatState prevState) {
+    public static RepeatState cycleState(RepeatState prevState) {
         switch (prevState) {
             case NO_REPEAT_PLAYLIST -> {
                 return REPEAT_ALL_PLAYLIST;
