@@ -13,4 +13,16 @@ public enum Visibility {
     public String getLabel() {
         return label;
     }
+
+    /**
+     * @param currVisibility visibility before cycling.
+     * @return PUBLIC, if current visibility is PRIVATE, and otherwise.
+     */
+    public static Visibility cycleVisibility(Visibility currVisibility) {
+        if (currVisibility == PUBLIC) {
+            return PRIVATE;
+        }
+
+        return PUBLIC;
+    }
 }
