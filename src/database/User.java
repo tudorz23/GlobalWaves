@@ -14,6 +14,7 @@ public class User {
     private ArrayList<Playlist> playlists;
     private ArrayList<Podcast> listenedPodcasts;
     private ArrayList<Song> likedSongs;
+    private ArrayList<Playlist> followedPlaylists;
 
     /* Constructor */
     public User(UserInput userInput) {
@@ -25,6 +26,7 @@ public class User {
         this.playlists = new ArrayList<>();
         this.listenedPodcasts = new ArrayList<>();
         this.likedSongs = new ArrayList<>();
+        this.followedPlaylists = new ArrayList<>();
     }
 
     /**
@@ -41,6 +43,14 @@ public class User {
 
         playlists.add(newPlaylist);
         return true;
+    }
+
+    public void addFollowedPlaylist(Playlist playlist) {
+        followedPlaylists.add(playlist);
+    }
+
+    public void removeFollowedPlaylist(Playlist playlist) {
+        followedPlaylists.remove(playlist);
     }
 
     public void addLikedSong(Song song) {
@@ -93,5 +103,8 @@ public class User {
     }
     public ArrayList<Song> getLikedSongs() {
         return likedSongs;
+    }
+    public ArrayList<Playlist> getFollowedPlaylists() {
+        return followedPlaylists;
     }
 }

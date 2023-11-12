@@ -78,6 +78,9 @@ public class CommandFactory {
             case SWITCH_VISIBILITY -> {
                 return new SwitchVisibilityCommand(session, commandInput, user, output);
             }
+            case FOLLOW -> {
+                return new FollowPlaylistCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }

@@ -42,6 +42,6 @@ public class SwitchVisibilityCommand implements ICommand {
         playlist.setVisibility(newVisibility);
 
         printer.print("Visibility status updated successfully to "
-                        + (playlist.getVisibility() == Visibility.PUBLIC) + ".");
+                        + playlist.getVisibility().getLabel() + ".");
     }
 }

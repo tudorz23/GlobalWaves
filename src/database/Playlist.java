@@ -187,6 +187,14 @@ public class Playlist extends Audio {
         songs.remove(song);
     }
 
+    public void incrementFollowersCnt() {
+        followersCnt++;
+    }
+
+    public void decrementFollowersCnt() {
+        followersCnt--;
+    }
+
     /* Getters and Setters */
     public String getOwner() {
         return owner;
