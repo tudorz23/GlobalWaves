@@ -37,6 +37,13 @@ public class AddRemoveInPlaylistCommand implements ICommand {
             return;
         }
 
+        userPlayer.simulateTimePass(session.getTimestamp());
+
+        if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
+            printer.print("Please load a source before adding to or removing from the playlist.");
+            return;
+        }
+
         if (commandInput.getPlaylistId() > user.getPlaylists().size()) {
             printer.print("The specified playlist does not exist.");
             return;

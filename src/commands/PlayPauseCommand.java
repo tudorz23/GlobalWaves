@@ -29,13 +29,17 @@ public class PlayPauseCommand implements ICommand {
         PrinterPlayPause printer = new PrinterPlayPause(user, session, output);
         Player userPlayer = user.getPlayer();
 
-        if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY
-            || userPlayer.getPlayerState() == PlayerState.STOPPED) {
+        if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {
             printer.print("Please load a source before attempting to pause or resume playback.");
             return;
         }
 
         userPlayer.simulateTimePass(session.getTimestamp());
+
+        if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
+            printer.print("Please load a source before attempting to pause or resume playback.");
+            return;
+        }
 
         if (userPlayer.getPlayerState() == PlayerState.PLAYING) {
             userPlayer.setPlayerState(PlayerState.PAUSED);

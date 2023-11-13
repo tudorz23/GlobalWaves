@@ -163,12 +163,26 @@ public class Playlist extends Audio {
 
     @Override
     public void next(Player player) {
+        if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
+            Song currSong = songs.get(playingSongIndex);
+            currSong.setTimePosition(0);
+            return;
+        }
+
         if (!player.isShuffle()) {
             changeToNextSong(player);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         changeToNextSongShuffle(player);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     @Override
@@ -178,16 +192,28 @@ public class Playlist extends Audio {
         if (playingSong.getTimePosition() != 0) {
             // At least 1 second passed.
             playingSong.setTimePosition(0);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         // No second passed.
         if (!player.isShuffle()) {
             changeToPrevSong(player);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         changeToPrevSongShuffle(player);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+            player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     /**

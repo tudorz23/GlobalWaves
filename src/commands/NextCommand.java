@@ -44,6 +44,11 @@ public class NextCommand implements ICommand {
         // Apply the "next" command.
         userPlayer.getCurrPlaying().next(userPlayer);
 
+        if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
+            printer.print("Please load a source before skipping to the next track.");
+            return;
+        }
+
         String trackName = userPlayer.getCurrPlaying().getPlayingTrackName();
         printer.print("Skipped to next track successfully. The current track is "
                     + trackName + ".");

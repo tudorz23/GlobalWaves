@@ -37,6 +37,13 @@ public class LikeCommand implements ICommand {
             return;
         }
 
+        userPlayer.simulateTimePass(session.getTimestamp());
+
+        if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
+            printer.print("Please load a source before liking or unliking.");
+            return;
+        }
+
         if (userPlayer.getCurrPlaying().getType() == AudioType.PODCAST) {
             printer.print("Loaded source is not a song.");
             return;

@@ -40,10 +40,10 @@ public class FollowPlaylistCommand implements ICommand {
 
         Playlist playlist = (Playlist) user.getSelection();
 
-        if (playlist.getOwner().equals(user.getUsername())) {
+        /*if (playlist.getOwner().equals(user.getUsername())) {
             printer.print("You cannot follow or unfollow your own playlist.");
             return;
-        }
+        }*/
 
         if (!user.getFollowedPlaylists().contains(playlist)) {
             user.addFollowedPlaylist(playlist);

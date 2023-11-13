@@ -122,6 +122,10 @@ public class Podcast extends Audio {
     @Override
     public void next(Player player) {
         changeToNextEpisode(player);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+            player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     @Override
@@ -131,12 +135,19 @@ public class Podcast extends Audio {
         if (playingEpisode.getTimePosition() != 0) {
             // At least 1 second passed.
             playingEpisode.setTimePosition(0);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         // No second passed.
         if (playingEpisodeIdx == 0) {
             // First episode;
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
@@ -144,6 +155,10 @@ public class Podcast extends Audio {
         playingEpisodeIdx = prevEpisodeIdx;
         Episode prevEpisode = episodes.get(prevEpisodeIdx);
         prevEpisode.setTimePosition(0);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+            player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     @Override
@@ -160,11 +175,19 @@ public class Podcast extends Audio {
 
         if (playingEpisode.getRemainedTime() < 90) {
             changeToNextEpisode(player);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         int currTimePos = playingEpisode.getTimePosition();
         playingEpisode.setTimePosition(currTimePos + 90);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+            player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     /**
@@ -175,11 +198,19 @@ public class Podcast extends Audio {
 
         if (playingEpisode.getTimePosition() < 90) {
             playingEpisode.setTimePosition(0);
+
+            if (player.getPlayerState() == PlayerState.PAUSED) {
+                player.setPlayerState(PlayerState.PLAYING);
+            }
             return;
         }
 
         int currTimePos = playingEpisode.getTimePosition();
         playingEpisode.setTimePosition(currTimePos - 90);
+
+        if (player.getPlayerState() == PlayerState.PAUSED) {
+            player.setPlayerState(PlayerState.PLAYING);
+        }
     }
 
     /* Getters and Setters */

@@ -37,6 +37,11 @@ public class RepeatCommand implements ICommand {
 
         userPlayer.simulateTimePass(session.getTimestamp());
 
+        if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
+            printer.print("Please load a source before setting the repeat status.");
+            return;
+        }
+
         RepeatState currRepeatState = userPlayer.getRepeatState();
         RepeatState newRepeatState = RepeatState.cycleState(currRepeatState);
 
