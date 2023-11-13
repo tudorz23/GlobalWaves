@@ -152,6 +152,21 @@ public class Podcast extends Audio {
         return playingEpisode.getName();
     }
 
+    /**
+     * Advances the play by 90 seconds.
+     */
+    public void forward(Player player) {
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+
+        if (playingEpisode.getRemainedTime() < 90) {
+            changeToNextEpisode(player);
+            return;
+        }
+
+        int currTimePos = playingEpisode.getTimePosition();
+        playingEpisode.setTimePosition(currTimePos + 90);
+    }
+
     /* Getters and Setters */
     public String getOwner() {
         return owner;
