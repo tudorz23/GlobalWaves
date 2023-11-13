@@ -125,6 +125,28 @@ public class Podcast extends Audio {
     }
 
     @Override
+    public void prev(Player player) {
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+
+        if (playingEpisode.getTimePosition() != 0) {
+            // At least 1 second passed.
+            playingEpisode.setTimePosition(0);
+            return;
+        }
+
+        // No second passed.
+        if (playingEpisodeIdx == 0) {
+            // First episode;
+            return;
+        }
+
+        int prevEpisodeIdx = playingEpisodeIdx - 1;
+        playingEpisodeIdx = prevEpisodeIdx;
+        Episode prevEpisode = episodes.get(prevEpisodeIdx);
+        prevEpisode.setTimePosition(0);
+    }
+
+    @Override
     public String getPlayingTrackName() {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
         return playingEpisode.getName();

@@ -81,6 +81,9 @@ public class CommandFactory {
             case FOLLOW -> {
                 return new FollowPlaylistCommand(session, commandInput, user, output);
             }
+            case PREV -> {
+                return new PrevCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }

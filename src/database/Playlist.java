@@ -132,6 +132,10 @@ public class Playlist extends Audio {
         newSong.setTimePosition(0);
     }
 
+    /**
+     * @return Index of the shuffleArray where the platingSongIndex
+     * is found as a value.
+     */
     private int getShuffleIndex(int playingSongIndex) {
         for (int i = 0; i < shuffleArray.size(); i++) {
             if (shuffleArray.get(i) == playingSongIndex) {
@@ -165,6 +169,59 @@ public class Playlist extends Audio {
         }
 
         changeToNextSongShuffle(player);
+    }
+
+    @Override
+    public void prev(Player player) {
+        Song playingSong = songs.get(playingSongIndex);
+
+        if (playingSong.getTimePosition() != 0) {
+            // At least 1 second passed.
+            playingSong.setTimePosition(0);
+            return;
+        }
+
+        // No second passed.
+        if (!player.isShuffle()) {
+            changeToPrevSong(player);
+            return;
+        }
+
+        changeToPrevSongShuffle(player);
+    }
+
+    /**
+     * Moves to the previous song in the playlist, for shuffle set to off.
+     */
+    private void changeToPrevSong(Player player) {
+        if (playingSongIndex == 0) {
+            // First song.
+            return;
+        }
+
+        int prevSongIndex = playingSongIndex - 1;
+        playingSongIndex = prevSongIndex;
+        Song prevSong = songs.get(prevSongIndex);
+        prevSong.setTimePosition(0);
+    }
+
+    /**
+     * Moves to the previous song in the playlist, for shuffle set to on.
+     */
+    private void changeToPrevSongShuffle(Player player) {
+        int shuffleIndex = getShuffleIndex(playingSongIndex);
+
+        if (shuffleIndex == 0) {
+            // First song.
+            return;
+        }
+
+        int prevShuffleIndex = shuffleIndex - 1;
+        int prevSongIndex = shuffleArray.get(prevShuffleIndex);
+
+        playingSongIndex = prevSongIndex;
+        Song prevSong = songs.get(prevSongIndex);
+        prevSong.setTimePosition(0);
     }
 
     @Override

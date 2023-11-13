@@ -36,6 +36,11 @@ public abstract class Audio {
     public abstract void next(Player player);
 
     /**
+     * Moves the player to the previous track.
+     */
+    public abstract void prev(Player player);
+
+    /**
      * @return Name of the currently playing track.
      */
     public abstract String getPlayingTrackName();

@@ -141,6 +141,12 @@ public class Song extends Audio {
     }
 
     @Override
+    public void prev(Player player) {
+        player.setPlayerState(PlayerState.PLAYING);
+        timePosition = 0;
+    }
+
+    @Override
     public String getPlayingTrackName() {
         return getName();
     }
