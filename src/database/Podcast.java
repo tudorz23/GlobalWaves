@@ -167,6 +167,21 @@ public class Podcast extends Audio {
         playingEpisode.setTimePosition(currTimePos + 90);
     }
 
+    /**
+     * Rewinds the play by 90 seconds.
+     */
+    public void backward(Player player) {
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+
+        if (playingEpisode.getTimePosition() < 90) {
+            playingEpisode.setTimePosition(0);
+            return;
+        }
+
+        int currTimePos = playingEpisode.getTimePosition();
+        playingEpisode.setTimePosition(currTimePos - 90);
+    }
+
     /* Getters and Setters */
     public String getOwner() {
         return owner;

@@ -6,19 +6,19 @@ import database.Player;
 import database.Podcast;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterForward;
+import fileio.output.PrinterBackward;
 import utils.AudioType;
 import utils.PlayerState;
 
-public class ForwardCommand implements ICommand {
+public class BackwardCommand implements ICommand {
     private Session session;
     private CommandInput commandInput;
     private User user;
     private ArrayNode output;
 
     /* Constructor */
-    public ForwardCommand(Session session, CommandInput commandInput,
-                          User user, ArrayNode output) {
+    public BackwardCommand(Session session, CommandInput commandInput,
+                           User user, ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -28,18 +28,18 @@ public class ForwardCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterForward printer = new PrinterForward(user, session, output);
+        PrinterBackward printer = new PrinterBackward(user, session, output);
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {
-            printer.print("Please load a source before attempting to forward.");
+            printer.print("Please select a source before rewinding.");
             return;
         }
 
         userPlayer.simulateTimePass(session.getTimestamp());
 
         if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
-            printer.print("Please load a source before attempting to forward.");
+            printer.print("Please select a source before rewinding.");
             return;
         }
 
@@ -50,8 +50,8 @@ public class ForwardCommand implements ICommand {
 
         Podcast podcast = (Podcast) userPlayer.getCurrPlaying();
 
-        // Apply the "forward" command.
-        podcast.forward(userPlayer);
-        printer.print("Skipped forward successfully.");
+        // Apply the "backward" command.
+        podcast.backward(userPlayer);
+        printer.print("Rewound successfully.");
     }
 }

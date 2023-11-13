@@ -87,6 +87,9 @@ public class CommandFactory {
             case FORWARD -> {
                 return new ForwardCommand(session, commandInput, user, output);
             }
+            case BACKWARD -> {
+                return new BackwardCommand(session, commandInput, user, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
