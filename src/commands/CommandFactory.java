@@ -94,6 +94,9 @@ public class CommandFactory {
             case GET_TOP5_SONGS -> {
                 return new GetTop5SongsCommand(session, commandInput, output);
             }
+            case GET_TOP5_PLAYLISTS -> {
+                return new GetTop5PlaylistsCommand(session, commandInput, output);
+            }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");
         }
