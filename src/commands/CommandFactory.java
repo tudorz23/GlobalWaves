@@ -31,7 +31,8 @@ public class CommandFactory {
 
         User user = getUser(commandInput);
 
-        if (user == null) {
+        if (user == null && commandType != CommandType.GET_TOP5_PLAYLISTS
+            && commandType != CommandType.GET_TOP5_SONGS) {
             throw new IllegalArgumentException("Invalid user argument.");
         }
 
@@ -89,6 +90,9 @@ public class CommandFactory {
             }
             case BACKWARD -> {
                 return new BackwardCommand(session, commandInput, user, output);
+            }
+            case GET_TOP5_SONGS -> {
+                return new GetTop5SongsCommand(session, commandInput, output);
             }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
                     + " not yet implemented.");

@@ -55,10 +55,12 @@ public class User {
 
     public void addLikedSong(Song song) {
         likedSongs.add(song);
+        song.incrementLikeCnt();
     }
 
     public void removeLikedSong(Song song) {
         likedSongs.remove(song);
+        song.decrementLikeCnt();
     }
 
     /* Getters and Setters */

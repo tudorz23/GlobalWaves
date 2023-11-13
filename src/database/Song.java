@@ -151,6 +151,14 @@ public class Song extends Audio {
         return getName();
     }
 
+    public void incrementLikeCnt() {
+        likeCnt++;
+    }
+
+    public void decrementLikeCnt() {
+        likeCnt--;
+    }
+
     /* Getters and Setters */
     public Integer getDuration() {
         return duration;
