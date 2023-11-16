@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Playlist;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterCreatePlaylist;
+import fileio.output.PrinterBasic;
 
 public class CreatePlaylistCommand implements ICommand {
     private Session session;
@@ -25,7 +25,7 @@ public class CreatePlaylistCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterCreatePlaylist printer = new PrinterCreatePlaylist(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
 
         Playlist newPlaylist = new Playlist(commandInput.getPlaylistName(), user.getUsername());
 

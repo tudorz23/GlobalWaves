@@ -6,7 +6,7 @@ import database.Player;
 import database.Podcast;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterBackward;
+import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
@@ -28,7 +28,7 @@ public class BackwardCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterBackward printer = new PrinterBackward(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {

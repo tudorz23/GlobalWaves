@@ -7,7 +7,7 @@ import database.Playlist;
 import database.Song;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterLike;
+import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
@@ -29,7 +29,7 @@ public class LikeCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterLike printer = new PrinterLike(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {

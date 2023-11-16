@@ -6,7 +6,7 @@ import database.Player;
 import database.Playlist;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterShuffle;
+import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
@@ -31,7 +31,7 @@ public class ShuffleCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterShuffle printer = new PrinterShuffle(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {

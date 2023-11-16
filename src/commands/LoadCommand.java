@@ -4,7 +4,7 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.*;
 import fileio.input.CommandInput;
-import fileio.output.PrinterLoad;
+import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 import utils.RepeatState;
@@ -27,16 +27,16 @@ public class LoadCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterLoad printerLoad = new PrinterLoad(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
 
         if (user.getSelection() == null) {
-            printerLoad.print("Please select a source before attempting to load.");
+            printer.print("Please select a source before attempting to load.");
             return;
         }
 
         if (user.getSelection().getType() == AudioType.PLAYLIST) {
             if (((Playlist) user.getSelection()).getSongs().isEmpty()) {
-                printerLoad.print("You can't load an empty audio collection!");
+                printer.print("You can't load an empty audio collection!");
                 return;
             }
         }
@@ -57,7 +57,7 @@ public class LoadCommand implements ICommand {
 
         user.setSelection(null);
         user.setSearchResult(null);
-        printerLoad.print("Playback loaded successfully.");
+        printer.print("Playback loaded successfully.");
     }
 
     /**

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Player;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterPrev;
+import fileio.output.PrinterBasic;
 import utils.PlayerState;
 
 public class PrevCommand implements ICommand {
@@ -27,7 +27,7 @@ public class PrevCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterPrev printer = new PrinterPrev(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {

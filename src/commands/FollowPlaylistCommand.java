@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Playlist;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterFollow;
+import fileio.output.PrinterBasic;
 import utils.AudioType;
 
 public class FollowPlaylistCommand implements ICommand {
@@ -26,7 +26,7 @@ public class FollowPlaylistCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterFollow printer = new PrinterFollow(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
 
         if (user.getSelection() == null) {
             printer.print("Please select a source before following or unfollowing.");

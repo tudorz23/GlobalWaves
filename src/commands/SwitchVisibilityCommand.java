@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Playlist;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterSwitchVisibility;
+import fileio.output.PrinterBasic;
 import utils.Visibility;
 
 public class SwitchVisibilityCommand implements ICommand {
@@ -26,7 +26,7 @@ public class SwitchVisibilityCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterSwitchVisibility printer = new PrinterSwitchVisibility(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
 
         int oldId = commandInput.getPlaylistId();
         if (oldId > user.getPlaylists().size()) {

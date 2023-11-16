@@ -5,19 +5,21 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.User;
 
-public class PrinterCreatePlaylist extends Printer {
+public class PrinterBasic extends Printer {
     private User user;
+    private String command;
 
     /* Constructor */
-    public PrinterCreatePlaylist(User user, Session session, ArrayNode output) {
+    public PrinterBasic(User user, Session session, ArrayNode output, String command) {
         super(session, output);
         this.user = user;
+        this.command = command;
     }
 
     public void print(String message) {
         ObjectNode commandNode = mapper.createObjectNode();
 
-        commandNode.put("command", "createPlaylist");
+        commandNode.put("command", command);
         commandNode.put("user", user.getUsername());
         commandNode.put("timestamp", session.getTimestamp());
         commandNode.put("message", message);

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Player;
 import database.User;
 import fileio.input.CommandInput;
-import fileio.output.PrinterPlayPause;
+import fileio.output.PrinterBasic;
 import utils.PlayerState;
 
 public class PlayPauseCommand implements ICommand {
@@ -26,7 +26,7 @@ public class PlayPauseCommand implements ICommand {
     @Override
     public void execute() {
         session.setTimestamp(commandInput.getTimestamp());
-        PrinterPlayPause printer = new PrinterPlayPause(user, session, output);
+        PrinterBasic printer = new PrinterBasic(user, session, output, commandInput.getCommand());
         Player userPlayer = user.getPlayer();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {

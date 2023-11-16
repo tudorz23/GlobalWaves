@@ -8,7 +8,6 @@ import database.Podcast;
 import database.Song;
 import database.User;
 import fileio.input.*;
-import fileio.output.PrinterJson;
 
 import java.util.List;
 
@@ -16,9 +15,7 @@ public class AdminInteraction {
     private Database database;
     private Session session;
     private Invoker invoker;
-
     private CommandFactory commandFactory;
-
     private final LibraryInput libraryInput;
     private final List<CommandInput> commandList;
     private ArrayNode output;
@@ -96,12 +93,5 @@ public class AdminInteraction {
         }
 
         invoker.execute(command);
-    }
-
-    private void printDatabase() {
-        PrinterJson printerJson = new PrinterJson();
-        printerJson.printUsers(database.getUsers(), output);
-
-        printerJson.printCommands(commandList, output);
     }
 }
