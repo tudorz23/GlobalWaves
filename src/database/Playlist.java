@@ -10,7 +10,7 @@ public class Playlist extends Audio {
     private String owner;
     private Visibility visibility;
     private ArrayList<Song> songs;
-    private int playingSongIndex;
+    private int playingSongIndex; // Index from the songs array.
     private int followersCnt;
     private ArrayList<Integer> shuffleArray;
 
@@ -37,6 +37,7 @@ public class Playlist extends Audio {
         copy.playingSongIndex = 0;
         copy.followersCnt = this.followersCnt;
 
+        // Initialize the shuffle array with the array v[i] = i (i.e. un-shuffled).
         copy.shuffleArray = new ArrayList<>();
         for (int i = 0; i < songs.size(); i++) {
             copy.shuffleArray.add((i));
@@ -47,7 +48,6 @@ public class Playlist extends Audio {
 
     @Override
     public void simulateTimePass(Player player, int currTime) {
-        // TODO
         if (player.getPlayerState() == PlayerState.PAUSED
                 || player.getPlayerState() == PlayerState.STOPPED) {
             return;
@@ -56,7 +56,7 @@ public class Playlist extends Audio {
         int elapsedTime = currTime - player.getPrevTimeInfo();
 
         if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
-            simulateRepeatCurrSong(player, elapsedTime);
+            simulateRepeatCurrSong(elapsedTime);
             return;
         }
 
@@ -71,11 +71,7 @@ public class Playlist extends Audio {
             }
 
             if (songRemainedTime <= elapsedTime) {
-                if (!player.isShuffle()) {
-                    changeToNextSong(player);
-                } else {
-                    changeToNextSongShuffle(player);
-                }
+                changeToNextSong(player);
 
                 elapsedTime -= songRemainedTime;
                 continue;
@@ -88,29 +84,10 @@ public class Playlist extends Audio {
     }
 
     /**
-     * Moves to the next song in the playlist, considering the repeat state.
+     * Moves to the next song in the playlist, considering the shuffled state
+     * of the playlist.
      */
     private void changeToNextSong(Player player) {
-        if (playingSongIndex == songs.size() - 1
-                && player.getRepeatState() == RepeatState.NO_REPEAT_PLAYLIST) {
-            // If No repeat is enabled and last song is reached, stop the player.
-            Song currSong = songs.get(playingSongIndex);
-            currSong.setTimePosition(currSong.getDuration());
-            player.setPlayerState(PlayerState.STOPPED);
-            return;
-        }
-
-        // Surely, it is either not last song or Repeat all is enabled.
-        int nextSongIndex = (playingSongIndex + 1) % (songs.size());
-        this.playingSongIndex = nextSongIndex;
-        Song newSong = songs.get(nextSongIndex);
-        newSong.setTimePosition(0);
-    }
-
-    /**
-     * Moves to the next song in the playlist if it is shuffled.
-     */
-    private void changeToNextSongShuffle(Player player) {
         int shuffleIndex = getShuffleIndex(playingSongIndex);
 
         if (shuffleIndex == shuffleArray.size() - 1
@@ -149,7 +126,7 @@ public class Playlist extends Audio {
     /**
      * Sets the new Time position for the currently playing song.
      */
-    private void simulateRepeatCurrSong(Player player, int elapsedTime) {
+    private void simulateRepeatCurrSong(int elapsedTime) {
         Song currSong = songs.get(playingSongIndex);
         int newTimePos = (currSong.getTimePosition() + elapsedTime) % currSong.getDuration();
         currSong.setTimePosition(newTimePos);
@@ -169,16 +146,7 @@ public class Playlist extends Audio {
             return;
         }
 
-        if (!player.isShuffle()) {
-            changeToNextSong(player);
-
-            if (player.getPlayerState() == PlayerState.PAUSED) {
-                player.setPlayerState(PlayerState.PLAYING);
-            }
-            return;
-        }
-
-        changeToNextSongShuffle(player);
+        changeToNextSong(player);
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
                 player.setPlayerState(PlayerState.PLAYING);
@@ -200,16 +168,7 @@ public class Playlist extends Audio {
         }
 
         // No second passed.
-        if (!player.isShuffle()) {
-            changeToPrevSong(player);
-
-            if (player.getPlayerState() == PlayerState.PAUSED) {
-                player.setPlayerState(PlayerState.PLAYING);
-            }
-            return;
-        }
-
-        changeToPrevSongShuffle(player);
+        changeToPrevSong();
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
             player.setPlayerState(PlayerState.PLAYING);
@@ -217,24 +176,10 @@ public class Playlist extends Audio {
     }
 
     /**
-     * Moves to the previous song in the playlist, for shuffle set to off.
+     * Moves to the previous song in the playlist, considering the shuffle state
+     * of the playlist.
      */
-    private void changeToPrevSong(Player player) {
-        if (playingSongIndex == 0) {
-            // First song.
-            return;
-        }
-
-        int prevSongIndex = playingSongIndex - 1;
-        playingSongIndex = prevSongIndex;
-        Song prevSong = songs.get(prevSongIndex);
-        prevSong.setTimePosition(0);
-    }
-
-    /**
-     * Moves to the previous song in the playlist, for shuffle set to on.
-     */
-    private void changeToPrevSongShuffle(Player player) {
+    private void changeToPrevSong() {
         int shuffleIndex = getShuffleIndex(playingSongIndex);
 
         if (shuffleIndex == 0) {

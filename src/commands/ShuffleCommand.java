@@ -51,16 +51,21 @@ public class ShuffleCommand implements ICommand {
             return;
         }
 
-        if (userPlayer.isShuffle()) {
-            userPlayer.setShuffle(false);
-            printer.print("Shuffle function deactivated successfully.");
-            return;
-        }
-
         Playlist currPlaylist = (Playlist) userPlayer.getCurrPlaying();
 
         // Clear any old shuffle.
         currPlaylist.getShuffleArray().clear();
+
+        if (userPlayer.isShuffle()) {
+            // Set the shuffle array to v[i] = i. (i.e. "un-shuffle" the playlist).
+            for (int i = 0; i < currPlaylist.getSongs().size(); i++) {
+                currPlaylist.getShuffleArray().add(i);
+            }
+
+            userPlayer.setShuffle(false);
+            printer.print("Shuffle function deactivated successfully.");
+            return;
+        }
 
         for (int i = 0; i < currPlaylist.getSongs().size(); i++) {
             currPlaylist.getShuffleArray().add(i);
