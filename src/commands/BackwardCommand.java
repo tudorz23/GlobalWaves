@@ -10,15 +10,15 @@ import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
-public class BackwardCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class BackwardCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public BackwardCommand(Session session, CommandInput commandInput,
-                           User user, ArrayNode output) {
+    public BackwardCommand(final Session session, final CommandInput commandInput,
+                           final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

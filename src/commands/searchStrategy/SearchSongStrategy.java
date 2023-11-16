@@ -9,16 +9,16 @@ import fileio.input.FiltersInput;
 import utils.Criteria;
 import java.util.ArrayList;
 import java.util.Iterator;
+import static utils.Constants.SEARCH_MAX_RESULT_SIZE;
 
-import static utils.Constants.SEARCH_MAX_RES_SIZE;
-
-public class SearchSongStrategy implements ISearchStrategy {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
+public final class SearchSongStrategy implements ISearchStrategy {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
 
     /* Constructor */
-    public SearchSongStrategy(Session session, CommandInput commandInput, User user) {
+    public SearchSongStrategy(final Session session, final CommandInput commandInput,
+                              final User user) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -27,7 +27,6 @@ public class SearchSongStrategy implements ISearchStrategy {
     @Override
     public void search() {
         ArrayList<Audio> searchResult = user.getSearchResult();
-
         FiltersInput filtersInput = commandInput.getFilters();
 
         // Add all songs, then remove those that do not respect the given filters.
@@ -61,12 +60,12 @@ public class SearchSongStrategy implements ISearchStrategy {
             searchSongsByArtist(searchResult, filtersInput.getArtist());
         }
 
-        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+        while (searchResult.size() > SEARCH_MAX_RESULT_SIZE) {
             searchResult.remove(searchResult.size() - 1);
         }
     }
 
-    private void searchSongsByName(ArrayList<Audio> searchResult, String name) {
+    private void searchSongsByName(final ArrayList<Audio> searchResult, final String name) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
@@ -77,7 +76,7 @@ public class SearchSongStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchSongsByAlbum(ArrayList<Audio> searchResult, String album) {
+    private void searchSongsByAlbum(final ArrayList<Audio> searchResult, final String album) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
@@ -88,7 +87,8 @@ public class SearchSongStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchSongsByTags(ArrayList<Audio> searchResult, ArrayList<String> tags) {
+    private void searchSongsByTags(final ArrayList<Audio> searchResult,
+                                   final ArrayList<String> tags) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
@@ -99,7 +99,7 @@ public class SearchSongStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchSongsByLyrics(ArrayList<Audio> searchResult, String lyrics) {
+    private void searchSongsByLyrics(final ArrayList<Audio> searchResult, final String lyrics) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
@@ -114,13 +114,13 @@ public class SearchSongStrategy implements ISearchStrategy {
      * Checks if str1 contains str2, case-insensitive.
      * @return true if it does, false otherwise.
      */
-    private boolean stringContainsCaseInsensitive(String str1, String str2) {
+    private boolean stringContainsCaseInsensitive(final String str1, final String str2) {
         String copy1 = str1.toLowerCase();
         String copy2 = str2.toLowerCase();
-        return (copy1.contains(copy2));
+        return copy1.contains(copy2);
     }
 
-    private void searchSongsByGenre(ArrayList<Audio> searchResult, String genre) {
+    private void searchSongsByGenre(final ArrayList<Audio> searchResult, final String genre) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();
@@ -131,10 +131,27 @@ public class SearchSongStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchSongsByReleaseYear(ArrayList<Audio> searchResult, String releaseYear) {
-        Criteria criteria = Criteria.fromString(releaseYear);
+    private void searchSongsByReleaseYear(final ArrayList<Audio> searchResult,
+                                          final String releaseYear) {
+        Criteria criteria;
+
+        // Check if given criteria respects the format.
+        try {
+            criteria = Criteria.parseCriteria(releaseYear);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return;
+        }
+
         String stringYear = releaseYear.substring(1);
-        int reqYear = Integer.parseInt(stringYear);
+
+        int reqYear;
+
+        // Integer.parseInt throws exception if the string does not contain an integer.
+        try {
+            reqYear = Integer.parseInt(stringYear);
+        } catch (NumberFormatException numberFormatException) {
+            return;
+        }
 
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
@@ -149,7 +166,8 @@ public class SearchSongStrategy implements ISearchStrategy {
     /**
      * Checks if the year respects the given criteria compared to the requested year.
      */
-    private boolean respectsCriteria(int year, int reqYear, Criteria criteria) {
+    private boolean respectsCriteria(final int year, final int reqYear,
+                                     final Criteria criteria) {
         if (criteria == Criteria.BEFORE) {
             return (year < reqYear);
         }
@@ -157,7 +175,7 @@ public class SearchSongStrategy implements ISearchStrategy {
         return (year > reqYear);
     }
 
-    private void searchSongsByArtist(ArrayList<Audio> searchResult, String artist) {
+    private void searchSongsByArtist(final ArrayList<Audio> searchResult, final String artist) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Song song = (Song) iterator.next();

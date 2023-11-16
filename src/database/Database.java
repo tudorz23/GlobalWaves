@@ -46,6 +46,7 @@ public class Database {
      * Traverses the song database and returns the instance of the
      * requested song, if it exists.
      * @return song instance for success, null otherwise.
+     * @throws IllegalArgumentException if the song is not found.
      */
     public Song searchSongInDatabase(Song reqSong) {
         for (Song song : songs) {
@@ -54,7 +55,7 @@ public class Database {
                 return song;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Critical: Song not found in the database.");
     }
 
     /* Getters and Setters */

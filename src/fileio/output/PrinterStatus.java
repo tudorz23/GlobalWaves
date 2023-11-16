@@ -4,7 +4,6 @@ import client.Session;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.*;
-import utils.AudioType;
 import utils.PlayerState;
 
 public class PrinterStatus extends Printer {
@@ -24,7 +23,6 @@ public class PrinterStatus extends Printer {
         commandNode.put("timestamp", session.getTimestamp());
 
         Player userPlayer = user.getPlayer();
-
         ObjectNode stats = mapper.createObjectNode();
 
         if (userPlayer == null || userPlayer.getPlayerState() == PlayerState.EMPTY) {
@@ -49,7 +47,6 @@ public class PrinterStatus extends Printer {
                     || userPlayer.getPlayerState() == PlayerState.STOPPED);
 
         commandNode.set("stats", stats);
-
         output.add(commandNode);
     }
 

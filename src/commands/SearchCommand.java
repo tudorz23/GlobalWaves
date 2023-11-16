@@ -10,18 +10,17 @@ import database.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterSearch;
 import utils.PlayerState;
-
 import java.util.ArrayList;
 
-public class SearchCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class SearchCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public SearchCommand(Session session, CommandInput commandInput,
-                         User user, ArrayNode output) {
+    public SearchCommand(final Session session, final CommandInput commandInput,
+                         final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -40,18 +39,19 @@ public class SearchCommand implements ICommand {
         user.setSelection(null);
         user.getPlayer().emptyPlayer();
 
-        ISearchStrategy searchStrategy = getSearchStrategy(user);
+        ISearchStrategy searchStrategy = getSearchStrategy();
 
         searchStrategy.search();
 
-        PrinterSearch printerSearch = new PrinterSearch(user, session, output);
-        printerSearch.print();
+        PrinterSearch printer = new PrinterSearch(user, session, output);
+        printer.print();
     }
 
     /**
      * Factory method to get the appropriate Strategy object for Search Command.
+     * @throws IllegalArgumentException if the searching criteria is invalid.
      */
-    private ISearchStrategy getSearchStrategy(User user) {
+    private ISearchStrategy getSearchStrategy() {
         switch (commandInput.getType()) {
             case "song" -> {
                 return new SearchSongStrategy(session, commandInput, user);

@@ -6,15 +6,15 @@ import database.User;
 import fileio.input.CommandInput;
 import fileio.output.PrinterShowPlaylists;
 
-public class ShowPlaylistsCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class ShowPlaylistsCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public ShowPlaylistsCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public ShowPlaylistsCommand(final Session session, final CommandInput commandInput,
+                                final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

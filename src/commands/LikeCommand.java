@@ -11,15 +11,15 @@ import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
-public class LikeCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class LikeCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public LikeCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public LikeCommand(final Session session, final CommandInput commandInput,
+                       final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -49,19 +49,19 @@ public class LikeCommand implements ICommand {
             return;
         }
 
-        Song playerSong;
-
+        Song playingSong;
         if (userPlayer.getCurrPlaying().getType() == AudioType.SONG) {
-            playerSong = (Song) userPlayer.getCurrPlaying();
+            playingSong = (Song) userPlayer.getCurrPlaying();
         } else {
             Playlist currPlaylist = (Playlist) (userPlayer.getCurrPlaying());
-            playerSong = (Song) (currPlaylist.getSongs().get(currPlaylist.getPlayingSongIndex()));
+            playingSong = (currPlaylist.getSongs().get(currPlaylist.getPlayingSongIndex()));
         }
 
-        Song song = session.getDatabase().searchSongInDatabase(playerSong);
-
-        if (song == null) {
-            throw new IllegalArgumentException("Song not found in the database.");
+        Song song;
+        try {
+            song = session.getDatabase().searchSongInDatabase(playingSong);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return;
         }
 
         if (user.getLikedSongs().contains(song)) {

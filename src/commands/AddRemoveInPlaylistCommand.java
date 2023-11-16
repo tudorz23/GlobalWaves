@@ -11,15 +11,15 @@ import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
 
-public class AddRemoveInPlaylistCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class AddRemoveInPlaylistCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public AddRemoveInPlaylistCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public AddRemoveInPlaylistCommand(final Session session, final CommandInput commandInput,
+                                      final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -57,14 +57,15 @@ public class AddRemoveInPlaylistCommand implements ICommand {
         int realIndex = commandInput.getPlaylistId() - 1;
         Playlist userPlaylist = user.getPlaylists().get(realIndex);
 
-        Song playerSong = (Song) userPlayer.getCurrPlaying();
+        Song playingSong = (Song) userPlayer.getCurrPlaying();
 
         // Remember that the Player stores a deep copy of the song,
-        // so a search in the database is necessary to get the real song.
-        Song song = session.getDatabase().searchSongInDatabase(playerSong);
-
-        if (song == null) {
-            throw new IllegalArgumentException("Song not found in the database.");
+        // so a search in the database is necessary to get the real song instance.
+        Song song;
+        try {
+            song = session.getDatabase().searchSongInDatabase(playingSong);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return;
         }
 
        if (userPlaylist.getSongs().contains(song)) {

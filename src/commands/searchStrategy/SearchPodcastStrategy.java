@@ -8,16 +8,16 @@ import fileio.input.CommandInput;
 import fileio.input.FiltersInput;
 import java.util.ArrayList;
 import java.util.Iterator;
+import static utils.Constants.SEARCH_MAX_RESULT_SIZE;
 
-import static utils.Constants.SEARCH_MAX_RES_SIZE;
-
-public class SearchPodcastStrategy implements ISearchStrategy {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
+public final class SearchPodcastStrategy implements ISearchStrategy {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
 
     /* Constructor */
-    public SearchPodcastStrategy(Session session, CommandInput commandInput, User user) {
+    public SearchPodcastStrategy(final Session session, final CommandInput commandInput,
+                                 final User user) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -40,12 +40,16 @@ public class SearchPodcastStrategy implements ISearchStrategy {
             searchPodcastsByOwner(searchResult, filtersInput.getOwner());
         }
 
-        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+        while (searchResult.size() > SEARCH_MAX_RESULT_SIZE) {
             searchResult.remove(searchResult.size() - 1);
         }
     }
 
-    private void searchPodcastsByName(ArrayList<Audio> searchResult, String name) {
+    /**
+     * Traverses the Search result list and removes the podcasts
+     * that do not have the indicated name.
+     */
+    private void searchPodcastsByName(final ArrayList<Audio> searchResult, final String name) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Podcast podcast = (Podcast) iterator.next();
@@ -56,7 +60,11 @@ public class SearchPodcastStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchPodcastsByOwner(ArrayList<Audio> searchResult, String owner) {
+    /**
+     * Traverses the Search result list and removes the podcasts
+     * that do not have the indicated owner.
+     */
+    private void searchPodcastsByOwner(final ArrayList<Audio> searchResult, final String owner) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Podcast podcast = (Podcast) iterator.next();

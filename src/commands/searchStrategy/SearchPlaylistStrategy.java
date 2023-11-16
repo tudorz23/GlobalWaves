@@ -7,19 +7,18 @@ import database.User;
 import fileio.input.CommandInput;
 import fileio.input.FiltersInput;
 import utils.Visibility;
-
 import java.util.ArrayList;
 import java.util.Iterator;
+import static utils.Constants.SEARCH_MAX_RESULT_SIZE;
 
-import static utils.Constants.SEARCH_MAX_RES_SIZE;
-
-public class SearchPlaylistStrategy implements ISearchStrategy {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
+public final class SearchPlaylistStrategy implements ISearchStrategy {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
 
     /* Constructor */
-    public SearchPlaylistStrategy(Session session, CommandInput commandInput, User user) {
+    public SearchPlaylistStrategy(final Session session, final CommandInput commandInput,
+                                  final User user) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -47,12 +46,12 @@ public class SearchPlaylistStrategy implements ISearchStrategy {
             searchPlaylistsByOwner(searchResult, filtersInput.getOwner());
         }
 
-        while (searchResult.size() > SEARCH_MAX_RES_SIZE) {
+        while (searchResult.size() > SEARCH_MAX_RESULT_SIZE) {
             searchResult.remove(searchResult.size() - 1);
         }
     }
 
-    private void searchPlaylistsByName(ArrayList<Audio> searchResult, String name) {
+    private void searchPlaylistsByName(final ArrayList<Audio> searchResult, final String name) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Playlist playlist = (Playlist) iterator.next();
@@ -63,7 +62,7 @@ public class SearchPlaylistStrategy implements ISearchStrategy {
         }
     }
 
-    private void searchPlaylistsByOwner(ArrayList<Audio> searchResult, String owner) {
+    private void searchPlaylistsByOwner(final ArrayList<Audio> searchResult, final String owner) {
         Iterator<Audio> iterator = searchResult.iterator();
         while (iterator.hasNext()) {
             Playlist playlist = (Playlist) iterator.next();
