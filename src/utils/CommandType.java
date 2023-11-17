@@ -24,16 +24,16 @@ public enum CommandType {
 
     private final String label;
 
-    CommandType(String label) {
+    CommandType(final String label) {
         this.label = label;
     }
 
     /**
-     * Gets an enum Command type from the label String.
+     * Gets a CommandType enum from the label String.
      * @param text String that will be compared to the label.
      * @return CommandType enum corresponding to the label.
      */
-    public static CommandType fromString(String text) {
+    public static CommandType fromString(final String text) {
         for (CommandType commandType : CommandType.values()) {
             if (commandType.label.equals(text)) {
                 return commandType;

@@ -7,11 +7,11 @@ import fileio.input.CommandInput;
 import utils.CommandType;
 
 public class CommandFactory {
-    private Session session;
-    private ArrayNode output;
+    private final Session session;
+    private final ArrayNode output;
 
     /* Constructor */
-    public CommandFactory(Session session, ArrayNode output) {
+    public CommandFactory(final Session session, final ArrayNode output) {
         this.session = session;
         this.output = output;
     }
@@ -22,18 +22,17 @@ public class CommandFactory {
      * @return ICommand object.
      * @throws IllegalArgumentException if command is not supported.
      */
-    public ICommand getCommand(CommandInput commandInput) throws IllegalArgumentException {
+    public ICommand getCommand(final CommandInput commandInput) throws IllegalArgumentException {
         CommandType commandType = CommandType.fromString(commandInput.getCommand());
-
         if (commandType == null) {
-            throw new IllegalArgumentException("Command " + commandInput.getCommand() + " not yet implemented.");
+            throw new IllegalArgumentException("Command " + commandInput.getCommand()
+                                                + " not supported.");
         }
 
-        User user = getUser(commandInput);
-
-        if (user == null && commandType != CommandType.GET_TOP5_PLAYLISTS
-            && commandType != CommandType.GET_TOP5_SONGS) {
-            throw new IllegalArgumentException("Invalid user argument.");
+        User user = null;
+        if (commandType != CommandType.GET_TOP5_PLAYLISTS
+                && commandType != CommandType.GET_TOP5_SONGS) {
+            user = getUser(commandInput);
         }
 
         switch (commandType) {
@@ -98,20 +97,23 @@ public class CommandFactory {
                 return new GetTop5PlaylistsCommand(session, commandInput, output);
             }
             default -> throw new IllegalArgumentException("Command " + commandInput.getCommand()
-                    + " not yet implemented.");
+                    + " not supported.");
         }
     }
 
     /**
      * Traverses the user list from the database.
      * @return User with the requested username.
+     * @throws IllegalArgumentException if there is no user with the requested username
+     * in the database.
      */
-    private User getUser(CommandInput commandInput) {
+    private User getUser(final CommandInput commandInput) {
         for (User user : session.getDatabase().getUsers()) {
             if (user.getUsername().equals(commandInput.getUsername())) {
                 return user;
             }
         }
-        return null;
+
+        throw new IllegalArgumentException("Nonexistent user.");
     }
 }

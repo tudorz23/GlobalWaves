@@ -5,10 +5,10 @@ import fileio.input.PodcastInput;
 import utils.AudioType;
 import utils.PlayerState;
 import utils.RepeatState;
-
 import java.util.ArrayList;
+import static utils.Constants.SKIP_REWIND_TIME;
 
-public class Podcast extends Audio {
+public final class Podcast extends Audio {
     private String owner;
     private ArrayList<Episode> episodes;
     private int playingEpisodeIdx;
@@ -17,9 +17,8 @@ public class Podcast extends Audio {
     private Podcast() {
     }
 
-    public Podcast(PodcastInput podcastInput) {
-        super();
-        this.setName(podcastInput.getName());
+    public Podcast(final PodcastInput podcastInput) {
+        super(podcastInput.getName());
         this.owner = podcastInput.getOwner();
         this.episodes = initializeEpisodes(podcastInput.getEpisodes());
         setType(AudioType.PODCAST);
@@ -27,9 +26,9 @@ public class Podcast extends Audio {
 
     /**
      * Helper for initializing the episodes field.
-     * @param episodeInputs list of EpisodeInputs objects to be converted to Episode.
+     * @param episodeInputs list of EpisodeInput objects to be converted to Episode.
      */
-    private ArrayList<Episode> initializeEpisodes(ArrayList<EpisodeInput> episodeInputs) {
+    private ArrayList<Episode> initializeEpisodes(final ArrayList<EpisodeInput> episodeInputs) {
         ArrayList<Episode> episodeList = new ArrayList<>();
 
         for (EpisodeInput episodeInput : episodeInputs) {
@@ -57,8 +56,7 @@ public class Podcast extends Audio {
     }
 
     @Override
-    public void simulateTimePass(Player player, int currTime) {
-        // TODO
+    public void simulateTimePass(final Player player, final int currTime) {
         if (player.getPlayerState() == PlayerState.PAUSED
                 || player.getPlayerState() == PlayerState.STOPPED) {
             return;
@@ -90,7 +88,7 @@ public class Podcast extends Audio {
     /**
      * Moves to the next episode, considering the repeat state.
      */
-    private void changeToNextEpisode(Player player) {
+    private void changeToNextEpisode(final Player player) {
         if (playingEpisodeIdx == episodes.size() - 1
             && player.getRepeatState() == RepeatState.NO_REPEAT) {
             // If no repeat is enabled and last episode is reached, stop the player.
@@ -120,7 +118,7 @@ public class Podcast extends Audio {
     }
 
     @Override
-    public void next(Player player) {
+    public void next(final Player player) {
         changeToNextEpisode(player);
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
@@ -129,7 +127,7 @@ public class Podcast extends Audio {
     }
 
     @Override
-    public void prev(Player player) {
+    public void prev(final Player player) {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
 
         if (playingEpisode.getTimePosition() != 0) {
@@ -170,10 +168,10 @@ public class Podcast extends Audio {
     /**
      * Advances the play by 90 seconds.
      */
-    public void forward(Player player) {
+    public void forward(final Player player) {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
 
-        if (playingEpisode.getRemainedTime() < 90) {
+        if (playingEpisode.getRemainedTime() < SKIP_REWIND_TIME) {
             changeToNextEpisode(player);
 
             if (player.getPlayerState() == PlayerState.PAUSED) {
@@ -183,7 +181,7 @@ public class Podcast extends Audio {
         }
 
         int currTimePos = playingEpisode.getTimePosition();
-        playingEpisode.setTimePosition(currTimePos + 90);
+        playingEpisode.setTimePosition(currTimePos + SKIP_REWIND_TIME);
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
             player.setPlayerState(PlayerState.PLAYING);
@@ -193,10 +191,10 @@ public class Podcast extends Audio {
     /**
      * Rewinds the play by 90 seconds.
      */
-    public void backward(Player player) {
+    public void backward(final Player player) {
         Episode playingEpisode = episodes.get(playingEpisodeIdx);
 
-        if (playingEpisode.getTimePosition() < 90) {
+        if (playingEpisode.getTimePosition() < SKIP_REWIND_TIME) {
             playingEpisode.setTimePosition(0);
 
             if (player.getPlayerState() == PlayerState.PAUSED) {
@@ -206,7 +204,7 @@ public class Podcast extends Audio {
         }
 
         int currTimePos = playingEpisode.getTimePosition();
-        playingEpisode.setTimePosition(currTimePos - 90);
+        playingEpisode.setTimePosition(currTimePos - SKIP_REWIND_TIME);
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
             player.setPlayerState(PlayerState.PLAYING);
@@ -217,19 +215,7 @@ public class Podcast extends Audio {
     public String getOwner() {
         return owner;
     }
-    public void setOwner(String owner) {
+    public void setOwner(final String owner) {
         this.owner = owner;
-    }
-    public ArrayList<Episode> getEpisodes() {
-        return episodes;
-    }
-    public void setEpisodes(ArrayList<Episode> episodes) {
-        this.episodes = episodes;
-    }
-    public int getPlayingEpisodeIdx() {
-        return playingEpisodeIdx;
-    }
-    public void setPlayingEpisodeIdx(int playingEpisodeIdx) {
-        this.playingEpisodeIdx = playingEpisodeIdx;
     }
 }

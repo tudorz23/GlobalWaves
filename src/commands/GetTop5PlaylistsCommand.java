@@ -6,18 +6,17 @@ import database.Playlist;
 import fileio.input.CommandInput;
 import fileio.output.PrinterTop5Playlists;
 import utils.Visibility;
-
 import java.util.ArrayList;
-import java.util.Comparator;
+import static utils.Constants.MAX_PLAYLIST_RANK_NUMBER;
 
-public class GetTop5PlaylistsCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private ArrayNode output;
+public final class GetTop5PlaylistsCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final ArrayNode output;
 
     /* Constructor */
-    public GetTop5PlaylistsCommand(Session session, CommandInput commandInput,
-                               ArrayNode output) {
+    public GetTop5PlaylistsCommand(final Session session, final CommandInput commandInput,
+                                   final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.output = output;
@@ -35,14 +34,13 @@ public class GetTop5PlaylistsCommand implements ICommand {
             }
         }
 
-        publicPlaylists.sort(new Comparator<Playlist>() {
-            @Override
-            public int compare(Playlist playlist1, Playlist playlist2) {
-                return playlist2.getFollowersCnt() - playlist1.getFollowersCnt();
-            }
-        });
+        // Lambda expression to sort the playlists by the followers count, decreasingly.
+        // Because playlists are added to the Database as they are created, they are
+        // automatically sorted by "age" in case of equality for followers.
+        publicPlaylists.sort((playlist1, playlist2) -> playlist2.getFollowersCnt()
+                                - playlist1.getFollowersCnt());
 
-        while (publicPlaylists.size() > 5) {
+        while (publicPlaylists.size() > MAX_PLAYLIST_RANK_NUMBER) {
             publicPlaylists.remove(publicPlaylists.size() - 1);
         }
 

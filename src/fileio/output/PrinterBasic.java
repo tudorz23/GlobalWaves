@@ -5,18 +5,23 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.User;
 
-public class PrinterBasic extends Printer {
-    private User user;
-    private String command;
+public final class PrinterBasic extends Printer {
+    private final User user;
+    private final String command;
 
     /* Constructor */
-    public PrinterBasic(User user, Session session, ArrayNode output, String command) {
+    public PrinterBasic(final User user, final Session session,
+                        final ArrayNode output, final String command) {
         super(session, output);
         this.user = user;
         this.command = command;
     }
 
-    public void print(String message) {
+    /**
+     * Appends a standard output, composed of generic data and a message,
+     * to the output ArrayNode.
+     */
+    public void print(final String message) {
         ObjectNode commandNode = mapper.createObjectNode();
 
         commandNode.put("command", command);

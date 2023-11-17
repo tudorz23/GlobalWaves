@@ -8,20 +8,20 @@ import database.Podcast;
 import database.Song;
 import database.User;
 import fileio.input.*;
-
 import java.util.List;
 
 public class AdminInteraction {
     private Database database;
     private Session session;
-    private Invoker invoker;
+    private final Invoker invoker;
     private CommandFactory commandFactory;
     private final LibraryInput libraryInput;
     private final List<CommandInput> commandList;
-    private ArrayNode output;
+    private final ArrayNode output;
 
     /* Constructor */
-    public AdminInteraction(LibraryInput libraryInput, List<CommandInput> commandList, ArrayNode output) {
+    public AdminInteraction(final LibraryInput libraryInput, final List<CommandInput> commandList,
+                            final ArrayNode output) {
         this.libraryInput = libraryInput;
         this.commandList = commandList;
         this.output = output;
@@ -83,7 +83,7 @@ public class AdminInteraction {
      * Calls the Command Factory to generate a command based on the commandInput.
      * @param commandInput the current command.
      */
-    private void executeAction(CommandInput commandInput) {
+    private void executeAction(final CommandInput commandInput) {
         ICommand command;
 
         try {

@@ -6,15 +6,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.*;
 import utils.PlayerState;
 
-public class PrinterStatus extends Printer {
-    private User user;
+public final class PrinterStatus extends Printer {
+    private final User user;
 
     /* Constructor */
-    public PrinterStatus(User user, Session session, ArrayNode output) {
+    public PrinterStatus(final User user, final Session session,
+                         final ArrayNode output) {
         super(session, output);
         this.user = user;
     }
 
+    /**
+     * Appends the Status output to the output ArrayNode.
+     */
     public void print() {
         ObjectNode commandNode = mapper.createObjectNode();
 
@@ -50,8 +54,11 @@ public class PrinterStatus extends Printer {
         output.add(commandNode);
     }
 
-    private void printEmptyPlayer(ObjectNode stats) {
-        stats.put("name" , "");
+    /**
+     * Prints the stats corresponding to an empty player.
+     */
+    private void printEmptyPlayer(final ObjectNode stats) {
+        stats.put("name", "");
         stats.put("remainedTime", 0);
         stats.put("repeat", "No Repeat");
         stats.put("shuffle", false);

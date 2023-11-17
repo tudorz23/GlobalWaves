@@ -1,14 +1,13 @@
 package database;
 
 import fileio.input.UserInput;
-
 import java.util.ArrayList;
 
-public class User {
+public final class User {
     private String username;
     private int age;
     private String city;
-    private ArrayList<Audio> searchResult;  // null when no search has been done
+    private ArrayList<Audio> searchResult;  // null when no search has been done.
     private Audio selection;
     private Player player;
     private ArrayList<Playlist> playlists;
@@ -17,7 +16,7 @@ public class User {
     private ArrayList<Playlist> followedPlaylists;
 
     /* Constructor */
-    public User(UserInput userInput) {
+    public User(final UserInput userInput) {
         this.username = userInput.getUsername();
         this.age = userInput.getAge();
         this.city = userInput.getCity();
@@ -34,7 +33,7 @@ public class User {
      * @return true, for success, false, if a playlist with the
      * same name already exists in user's list.
      */
-    public boolean addPlaylist(Playlist newPlaylist) {
+    public boolean addPlaylist(final Playlist newPlaylist) {
         for (Playlist playlist : playlists) {
             if (playlist.getName().equals(newPlaylist.getName())) {
                 return false;
@@ -45,20 +44,32 @@ public class User {
         return true;
     }
 
-    public void addFollowedPlaylist(Playlist playlist) {
+    /**
+     * Adds a new Playlist to user's followed playlists.
+     */
+    public void addFollowedPlaylist(final Playlist playlist) {
         followedPlaylists.add(playlist);
     }
 
-    public void removeFollowedPlaylist(Playlist playlist) {
+    /**
+     * Removes a Playlist from user's followed playlists.
+     */
+    public void removeFollowedPlaylist(final Playlist playlist) {
         followedPlaylists.remove(playlist);
     }
 
-    public void addLikedSong(Song song) {
+    /**
+     * Adds a new Song to user's liked songs.
+     */
+    public void addLikedSong(final Song song) {
         likedSongs.add(song);
         song.incrementLikeCnt();
     }
 
-    public void removeLikedSong(Song song) {
+    /**
+     * Removes a Song from user's liked songs.
+     */
+    public void removeLikedSong(final Song song) {
         likedSongs.remove(song);
         song.decrementLikeCnt();
     }
@@ -67,37 +78,37 @@ public class User {
     public String getUsername() {
         return username;
     }
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
     public int getAge() {
         return age;
     }
-    public void setAge(int age) {
+    public void setAge(final int age) {
         this.age = age;
     }
     public String getCity() {
         return city;
     }
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
     public ArrayList<Audio> getSearchResult() {
         return searchResult;
     }
-    public void setSearchResult(ArrayList<Audio> searchResult) {
+    public void setSearchResult(final ArrayList<Audio> searchResult) {
         this.searchResult = searchResult;
     }
     public Audio getSelection() {
         return selection;
     }
-    public void setSelection(Audio selection) {
+    public void setSelection(final Audio selection) {
         this.selection = selection;
     }
     public Player getPlayer() {
         return player;
     }
-    public void setPlayer(Player player) {
+    public void setPlayer(final Player player) {
         this.player = player;
     }
     public ArrayList<Playlist> getPlaylists() {

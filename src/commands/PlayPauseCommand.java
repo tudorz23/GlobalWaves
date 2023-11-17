@@ -8,15 +8,15 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
 import utils.PlayerState;
 
-public class PlayPauseCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class PlayPauseCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public PlayPauseCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public PlayPauseCommand(final Session session, final CommandInput commandInput,
+                            final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;

@@ -10,8 +10,12 @@ public abstract class Audio {
     private String name;
     private AudioType type;
 
-    /* Constructor */
+    /* Constructors */
     public Audio() {
+    }
+
+    public Audio(final String name) {
+        this.name = name;
     }
 
     /**
@@ -46,16 +50,31 @@ public abstract class Audio {
     public abstract String getPlayingTrackName();
 
     /* Getters and Setters */
+    /**
+     * Getter for name field.
+     */
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+
+    /**
+     * Setter for name field.
+     */
+    public void setName(final String name) {
         this.name = name;
     }
+
+    /**
+     * Getter for type field.
+     */
     public AudioType getType() {
         return type;
     }
-    public void setType(AudioType type) {
+
+    /**
+     * Setter for type field.
+     */
+    public void setType(final AudioType type) {
         this.type = type;
     }
 }

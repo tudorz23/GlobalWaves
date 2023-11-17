@@ -2,7 +2,7 @@ package fileio.input;
 
 import java.util.ArrayList;
 
-public class FiltersInput {
+public final class FiltersInput {
     private String name;
     private String album;
     private ArrayList<String> tags;
@@ -13,14 +13,15 @@ public class FiltersInput {
     private String owner;
 
     /* Constructor */
-    public FiltersInput() { }
+    public FiltersInput() {
+    }
 
     /* Getters and Setters */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -28,7 +29,7 @@ public class FiltersInput {
         return album;
     }
 
-    public void setAlbum(String album) {
+    public void setAlbum(final String album) {
         this.album = album;
     }
 
@@ -36,7 +37,7 @@ public class FiltersInput {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(final ArrayList<String> tags) {
         this.tags = tags;
     }
 
@@ -44,7 +45,7 @@ public class FiltersInput {
         return lyrics;
     }
 
-    public void setLyrics(String lyrics) {
+    public void setLyrics(final String lyrics) {
         this.lyrics = lyrics;
     }
 
@@ -52,7 +53,7 @@ public class FiltersInput {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(final String genre) {
         this.genre = genre;
     }
 
@@ -60,7 +61,7 @@ public class FiltersInput {
         return releaseYear;
     }
 
-    public void setReleaseYear(String releaseYear) {
+    public void setReleaseYear(final String releaseYear) {
         this.releaseYear = releaseYear;
     }
 
@@ -68,7 +69,7 @@ public class FiltersInput {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(final String artist) {
         this.artist = artist;
     }
 
@@ -76,7 +77,7 @@ public class FiltersInput {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(final String owner) {
         this.owner = owner;
     }
 }

@@ -2,11 +2,17 @@ package client;
 
 import commands.ICommand;
 
-public class Invoker {
+/**
+ * Manages the commands.
+ */
+public final class Invoker {
     /* Constructor */
     public Invoker() { }
 
-    public void execute(ICommand command) {
+    /**
+     * Calls the execute method from ICommand interface.
+     */
+    public void execute(final ICommand command) {
         command.execute();
     }
 }

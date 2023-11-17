@@ -4,10 +4,9 @@ import fileio.input.SongInput;
 import utils.AudioType;
 import utils.PlayerState;
 import utils.RepeatState;
-
 import java.util.ArrayList;
 
-public class Song extends Audio {
+public final class Song extends Audio {
     private Integer duration;
     private String album;
     private ArrayList<String> tags;
@@ -15,16 +14,15 @@ public class Song extends Audio {
     private String genre;
     private Integer releaseYear;
     private String artist;
-    private int timePosition; // song time at last known moment
+    private int timePosition; // Song time at last known moment.
     private int likeCnt;
 
     /* Constructors */
     private Song() {
     }
 
-    public Song(SongInput songInput) {
-        super();
-        this.setName(songInput.getName());
+    public Song(final SongInput songInput) {
+        super(songInput.getName());
         this.duration = songInput.getDuration();
         this.album = songInput.getAlbum();
         this.tags = songInput.getTags();
@@ -56,7 +54,7 @@ public class Song extends Audio {
     }
 
     @Override
-    public void simulateTimePass(Player player, int currTime) {
+    public void simulateTimePass(final Player player, final int currTime) {
         if (player.getPlayerState() == PlayerState.PAUSED
             || player.getPlayerState() == PlayerState.STOPPED) {
             return;
@@ -80,15 +78,14 @@ public class Song extends Audio {
     /**
      * Simulates the time passing when Repeat Infinite is on.
      */
-    private void simulateRepeatInfinite(int elapsedTime) {
-        int newTimePos = (timePosition + elapsedTime) % duration;
-        timePosition = newTimePos;
+    private void simulateRepeatInfinite(final int elapsedTime) {
+        timePosition = (timePosition + elapsedTime) % duration;
     }
 
     /**
      * Simulates the time passing when Repeat Once is on.
      */
-    private void simulateRepeatOnce(Player player, int elapsedTime) {
+    private void simulateRepeatOnce(final Player player, final int elapsedTime) {
         int quotient = (timePosition + elapsedTime) / duration;
         int remainder = (timePosition + elapsedTime) % duration;
 
@@ -114,7 +111,7 @@ public class Song extends Audio {
     /**
      * Simulates the time passing when No repeat is on.
      */
-    private void simulateNoRepeat(Player player, int elapsedTime) {
+    private void simulateNoRepeat(final Player player, final int elapsedTime) {
         int quotient = (timePosition + elapsedTime) / duration;
         int remainder = (timePosition + elapsedTime) % duration;
 
@@ -135,13 +132,13 @@ public class Song extends Audio {
     }
 
     @Override
-    public void next(Player player) {
+    public void next(final Player player) {
         player.setPlayerState(PlayerState.STOPPED);
         timePosition = duration;
     }
 
     @Override
-    public void prev(Player player) {
+    public void prev(final Player player) {
         player.setPlayerState(PlayerState.PLAYING);
         timePosition = 0;
     }
@@ -151,10 +148,16 @@ public class Song extends Audio {
         return getName();
     }
 
+    /**
+     * Increments the number of likes.
+     */
     public void incrementLikeCnt() {
         likeCnt++;
     }
 
+    /**
+     * Decrements the number of likes.
+     */
     public void decrementLikeCnt() {
         likeCnt--;
     }
@@ -163,55 +166,52 @@ public class Song extends Audio {
     public Integer getDuration() {
         return duration;
     }
-    public void setDuration(Integer duration) {
+    public void setDuration(final Integer duration) {
         this.duration = duration;
     }
     public String getAlbum() {
         return album;
     }
-    public void setAlbum(String album) {
+    public void setAlbum(final String album) {
         this.album = album;
     }
     public ArrayList<String> getTags() {
         return tags;
     }
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(final ArrayList<String> tags) {
         this.tags = tags;
     }
     public String getLyrics() {
         return lyrics;
     }
-    public void setLyrics(String lyrics) {
+    public void setLyrics(final String lyrics) {
         this.lyrics = lyrics;
     }
     public String getGenre() {
         return genre;
     }
-    public void setGenre(String genre) {
+    public void setGenre(final String genre) {
         this.genre = genre;
     }
     public Integer getReleaseYear() {
         return releaseYear;
     }
-    public void setReleaseYear(Integer releaseYear) {
+    public void setReleaseYear(final Integer releaseYear) {
         this.releaseYear = releaseYear;
     }
     public String getArtist() {
         return artist;
     }
-    public void setArtist(String artist) {
+    public void setArtist(final String artist) {
         this.artist = artist;
     }
     public int getTimePosition() {
         return timePosition;
     }
-    public void setTimePosition(int timePosition) {
+    public void setTimePosition(final int timePosition) {
         this.timePosition = timePosition;
     }
     public int getLikeCnt() {
         return likeCnt;
-    }
-    public void setLikeCnt(int likeCnt) {
-        this.likeCnt = likeCnt;
     }
 }

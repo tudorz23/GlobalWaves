@@ -6,7 +6,7 @@ import utils.RepeatState;
 import utils.Visibility;
 import java.util.ArrayList;
 
-public class Playlist extends Audio {
+public final class Playlist extends Audio {
     private String owner;
     private Visibility visibility;
     private ArrayList<Song> songs;
@@ -15,9 +15,8 @@ public class Playlist extends Audio {
     private ArrayList<Integer> shuffleArray;
 
     /* Constructor */
-    public Playlist(String name, String owner) {
-        super();
-        this.setName(name);
+    public Playlist(final String name, final String owner) {
+        super(name);
         this.owner = owner;
         this.visibility = Visibility.PUBLIC;
         this.songs = new ArrayList<>();
@@ -47,7 +46,7 @@ public class Playlist extends Audio {
     }
 
     @Override
-    public void simulateTimePass(Player player, int currTime) {
+    public void simulateTimePass(final Player player, final int currTime) {
         if (player.getPlayerState() == PlayerState.PAUSED
                 || player.getPlayerState() == PlayerState.STOPPED) {
             return;
@@ -87,7 +86,7 @@ public class Playlist extends Audio {
      * Moves to the next song in the playlist, considering the shuffled state
      * of the playlist.
      */
-    private void changeToNextSong(Player player) {
+    private void changeToNextSong(final Player player) {
         int shuffleIndex = getShuffleIndex(playingSongIndex);
 
         if (shuffleIndex == shuffleArray.size() - 1
@@ -113,9 +112,9 @@ public class Playlist extends Audio {
      * @return Index of the shuffleArray where the platingSongIndex
      * is found as a value.
      */
-    private int getShuffleIndex(int playingSongIndex) {
+    private int getShuffleIndex(final int currPlayingSongIndex) {
         for (int i = 0; i < shuffleArray.size(); i++) {
-            if (shuffleArray.get(i) == playingSongIndex) {
+            if (shuffleArray.get(i) == currPlayingSongIndex) {
                 return i;
             }
         }
@@ -126,7 +125,7 @@ public class Playlist extends Audio {
     /**
      * Sets the new Time position for the currently playing song.
      */
-    private void simulateRepeatCurrSong(int elapsedTime) {
+    private void simulateRepeatCurrSong(final int elapsedTime) {
         Song currSong = songs.get(playingSongIndex);
         int newTimePos = (currSong.getTimePosition() + elapsedTime) % currSong.getDuration();
         currSong.setTimePosition(newTimePos);
@@ -139,7 +138,7 @@ public class Playlist extends Audio {
     }
 
     @Override
-    public void next(Player player) {
+    public void next(final Player player) {
         if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
             Song currSong = songs.get(playingSongIndex);
             currSong.setTimePosition(0);
@@ -154,7 +153,7 @@ public class Playlist extends Audio {
     }
 
     @Override
-    public void prev(Player player) {
+    public void prev(final Player player) {
         Song playingSong = songs.get(playingSongIndex);
 
         if (playingSong.getTimePosition() != 0) {
@@ -204,21 +203,27 @@ public class Playlist extends Audio {
     /**
      * Adds a song to the playlist.
      */
-    public void addSong(Song song) {
+    public void addSong(final Song song) {
         songs.add(song);
     }
 
     /**
      * Removes a song from the playlist.
      */
-    public void removeSong(Song song) {
+    public void removeSong(final Song song) {
         songs.remove(song);
     }
 
+    /**
+     * Increments the number of followers.
+     */
     public void incrementFollowersCnt() {
         followersCnt++;
     }
 
+    /**
+     * Decrements the number of followers.
+     */
     public void decrementFollowersCnt() {
         followersCnt--;
     }
@@ -230,31 +235,22 @@ public class Playlist extends Audio {
     public Visibility getVisibility() {
         return visibility;
     }
-    public void setVisibility(Visibility visibility) {
+    public void setVisibility(final Visibility visibility) {
         this.visibility = visibility;
     }
     public ArrayList<Song> getSongs() {
         return songs;
     }
-    public void setSongs(ArrayList<Song> songs) {
+    public void setSongs(final ArrayList<Song> songs) {
         this.songs = songs;
     }
     public int getPlayingSongIndex() {
         return playingSongIndex;
     }
-    public void setPlayingSongIndex(int playingSongIndex) {
-        this.playingSongIndex = playingSongIndex;
-    }
     public int getFollowersCnt() {
         return followersCnt;
     }
-    public void setFollowersCnt(int followersCnt) {
-        this.followersCnt = followersCnt;
-    }
     public ArrayList<Integer> getShuffleArray() {
         return shuffleArray;
-    }
-    public void setShuffleArray(ArrayList<Integer> shuffleArray) {
-        this.shuffleArray = shuffleArray;
     }
 }

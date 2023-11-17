@@ -2,17 +2,17 @@ package database;
 
 import fileio.input.EpisodeInput;
 
-public class Episode {
+public final class Episode {
     private String name;
     private Integer duration;
     private String description;
-    private int timePosition; // time of the episode at last known moment
+    private int timePosition; // Episode time at last known moment.
 
     /* Constructors */
     private Episode() {
     }
 
-    public Episode(EpisodeInput episodeInput) {
+    public Episode(final EpisodeInput episodeInput) {
         this.name = episodeInput.getName();
         this.duration = episodeInput.getDuration();
         this.description = episodeInput.getDescription();
@@ -32,6 +32,9 @@ public class Episode {
         return copy;
     }
 
+    /**
+     * @return Time remained until episode ends.
+     */
     public int getRemainedTime() {
         return (duration - timePosition);
     }
@@ -40,25 +43,19 @@ public class Episode {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
     public Integer getDuration() {
         return duration;
     }
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
     public String getDescription() {
         return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
     }
     public int getTimePosition() {
         return timePosition;
     }
-    public void setTimePosition(int timePosition) {
+    public void setTimePosition(final int timePosition) {
         this.timePosition = timePosition;
     }
 }

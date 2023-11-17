@@ -6,15 +6,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.Song;
 import database.User;
 
-public class PrinterShowPreferredSongs extends Printer {
-    private User user;
+public final class PrinterShowPreferredSongs extends Printer {
+    private final User user;
 
     /* Constructor */
-    public PrinterShowPreferredSongs(User user, Session session, ArrayNode output) {
+    public PrinterShowPreferredSongs(final User user, final Session session,
+                                     final ArrayNode output) {
         super(session, output);
         this.user = user;
     }
 
+    /**
+     * Appends the ShowPreferredSongs output to the output ArrayNode.
+     */
     public void print() {
         ObjectNode commandNode = mapper.createObjectNode();
 
@@ -28,7 +32,6 @@ public class PrinterShowPreferredSongs extends Printer {
         }
 
         commandNode.set("result", result);
-
         output.add(commandNode);
     }
 }

@@ -2,7 +2,7 @@ package database;
 
 import java.util.ArrayList;
 
-public class Database {
+public final class Database {
     private ArrayList<Song> songs;
     private ArrayList<Podcast> podcasts;
     private ArrayList<User> users;
@@ -17,38 +17,40 @@ public class Database {
     }
 
     /**
-     * Adds a new song to the song list.
+     * Adds a new song to the songs list.
      */
-    public void addSong(Song song) {
+    public void addSong(final Song song) {
         songs.add(song);
     }
 
     /**
-     * Adds a new podcast to the podcast list.
+     * Adds a new podcast to the podcasts list.
      */
-    public void addPodcast(Podcast podcast) {
+    public void addPodcast(final Podcast podcast) {
         podcasts.add(podcast);
     }
 
-    public void addUser(User user) {
+    /**
+     * Adds a new user to the users list.
+     */
+    public void addUser(final User user) {
         users.add(user);
     }
 
-    public void addPlaylist(Playlist playlist) {
+    /**
+     * Adds a new playlist to the playlists list.
+     */
+    public void addPlaylist(final Playlist playlist) {
         playlists.add(playlist);
-    }
-
-    public void removePlaylist(Playlist playlist) {
-        playlists.remove(playlist);
     }
 
     /**
      * Traverses the song database and returns the instance of the
      * requested song, if it exists.
-     * @return song instance for success, null otherwise.
+     * @return Song instance for success, null otherwise.
      * @throws IllegalArgumentException if the song is not found.
      */
-    public Song searchSongInDatabase(Song reqSong) {
+    public Song searchSongInDatabase(final Song reqSong) {
         for (Song song : songs) {
             if (song.getName().equals(reqSong.getName())
                 && song.getArtist().equals(reqSong.getArtist())) {

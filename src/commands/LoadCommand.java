@@ -9,15 +9,15 @@ import utils.AudioType;
 import utils.PlayerState;
 import utils.RepeatState;
 
-public class LoadCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class LoadCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public LoadCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public LoadCommand(final Session session, final CommandInput commandInput,
+                       final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -64,7 +64,7 @@ public class LoadCommand implements ICommand {
      * Loads the selection into the player. Podcast load is done separately
      * For songs and playlists, a deep copy is directly added.
      */
-    public void loadSelection(Player player) {
+    public void loadSelection(final Player player) {
         Audio selection = user.getSelection();
 
         // If the selection is a podcast, check if it hasn't been listened to before.
@@ -80,8 +80,9 @@ public class LoadCommand implements ICommand {
     /**
      * Loads a podcast into the player. If the podcast has been listened to before,
      * that respective object is loaded. Else, a new deep copy is created and loaded.
+     * Thus, it is ensured that an old podcast will start from where it was left.
      */
-    public void loadPodcast(Player player, Podcast podcast) {
+    public void loadPodcast(final Player player, final Podcast podcast) {
         for (Podcast listenedPodcast : user.getListenedPodcasts()) {
             if (listenedPodcast.getName().equals(podcast.getName())) {
                 player.setCurrPlaying(listenedPodcast);

@@ -8,21 +8,20 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterStatus;
 import utils.PlayerState;
 
-public class StatusCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class StatusCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public StatusCommand(Session session, CommandInput commandInput,
-                       User user, ArrayNode output) {
+    public StatusCommand(final Session session, final CommandInput commandInput,
+                         final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
         this.output = output;
     }
-
 
     @Override
     public void execute() {

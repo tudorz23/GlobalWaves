@@ -10,7 +10,7 @@ public enum Criteria {
      * @return Criteria enum with the requested meaning.
      * @throws IllegalArgumentException if text does not start with either '>' or '<'.
      */
-    public static Criteria parseCriteria(String text) {
+    public static Criteria parseCriteria(final String text) {
         if (text.charAt(0) == '<') {
             return BEFORE;
         }

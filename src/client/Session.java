@@ -2,12 +2,12 @@ package client;
 
 import database.Database;
 
-public class Session {
+public final class Session {
     private Database database;
     private int timestamp;
 
     /* Constructor */
-    public Session(Database database) {
+    public Session(final Database database) {
         this.timestamp = 0;
         this.database = database;
     }
@@ -16,13 +16,13 @@ public class Session {
     public Database getDatabase() {
         return database;
     }
-    public void setDatabase(Database database) {
+    public void setDatabase(final Database database) {
         this.database = database;
     }
     public int getTimestamp() {
         return timestamp;
     }
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(final int timestamp) {
         this.timestamp = timestamp;
     }
 }

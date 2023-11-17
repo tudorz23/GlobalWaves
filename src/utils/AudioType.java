@@ -7,16 +7,16 @@ public enum AudioType {
 
     private final String label;
 
-    AudioType(String label) {
+    AudioType(final String label) {
         this.label = label;
     }
 
     /**
-     * Gets an enum audio type from the label String.
+     * Gets an AudioType enum from the label String.
      * @param text  String that will be compared to the labels.
      * @return  AudioType enum corresponding to the label.
      */
-    public static AudioType fromString(String text) {
+    public static AudioType fromString(final String text) {
         for (AudioType audioType : AudioType.values()) {
             if (audioType.label.equals(text)) {
                 return audioType;

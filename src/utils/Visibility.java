@@ -6,7 +6,7 @@ public enum Visibility {
 
     private final String label;
 
-    Visibility(String label) {
+    Visibility(final String label) {
         this.label = label;
     }
 
@@ -18,7 +18,7 @@ public enum Visibility {
      * @param currVisibility visibility before cycling.
      * @return PUBLIC, if current visibility is PRIVATE, and otherwise.
      */
-    public static Visibility cycleVisibility(Visibility currVisibility) {
+    public static Visibility cycleVisibility(final Visibility currVisibility) {
         if (currVisibility == PUBLIC) {
             return PRIVATE;
         }

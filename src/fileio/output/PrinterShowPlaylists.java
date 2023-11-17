@@ -6,18 +6,21 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.Playlist;
 import database.Song;
 import database.User;
-
 import java.util.ArrayList;
 
-public class PrinterShowPlaylists extends Printer {
-    private User user;
+public final class PrinterShowPlaylists extends Printer {
+    private final User user;
 
     /* Constructor */
-    public PrinterShowPlaylists(User user, Session session, ArrayNode output) {
+    public PrinterShowPlaylists(final User user, final Session session,
+                                final ArrayNode output) {
         super(session, output);
         this.user = user;
     }
 
+    /**
+     * Appends the ShowPlaylists output to the output ArrayNode.
+     */
     public void print() {
         ObjectNode commandNode = mapper.createObjectNode();
 
@@ -31,11 +34,14 @@ public class PrinterShowPlaylists extends Printer {
         }
 
         commandNode.set("result", result);
-
         output.add(commandNode);
     }
 
-    public ObjectNode createPlaylistNode(Playlist playlist) {
+    /**
+     * @param playlist Original Playlist object.
+     * @return ObjectNode containing data regarding a Playlist.
+     */
+    public ObjectNode createPlaylistNode(final Playlist playlist) {
         ObjectNode playlistNode = mapper.createObjectNode();
 
         playlistNode.put("name", playlist.getName());
@@ -49,7 +55,11 @@ public class PrinterShowPlaylists extends Printer {
         return playlistNode;
     }
 
-    public ArrayNode createSongsArrayNode(ArrayList<Song> songs) {
+    /**
+     * @param songs ArrayList of Song objects.
+     * @return ArrayNode containing the names of the songs from an ArrayList.
+     */
+    public ArrayNode createSongsArrayNode(final ArrayList<Song> songs) {
         ArrayNode songsArrayNode = mapper.createArrayNode();
 
         for (Song song : songs) {

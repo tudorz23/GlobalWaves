@@ -9,19 +9,18 @@ import fileio.input.CommandInput;
 import fileio.output.PrinterBasic;
 import utils.AudioType;
 import utils.PlayerState;
-
 import java.util.Collections;
 import java.util.Random;
 
-public class ShuffleCommand implements ICommand {
-    private Session session;
-    private CommandInput commandInput;
-    private User user;
-    private ArrayNode output;
+public final class ShuffleCommand implements ICommand {
+    private final Session session;
+    private final CommandInput commandInput;
+    private final User user;
+    private final ArrayNode output;
 
     /* Constructor */
-    public ShuffleCommand(Session session, CommandInput commandInput,
-                          User user, ArrayNode output) {
+    public ShuffleCommand(final Session session, final CommandInput commandInput,
+                          final User user, final ArrayNode output) {
         this.session = session;
         this.commandInput = commandInput;
         this.user = user;
@@ -39,11 +38,6 @@ public class ShuffleCommand implements ICommand {
             return;
         }
 
-        if (userPlayer.getCurrPlaying().getType() != AudioType.PLAYLIST) {
-            printer.print("The loaded source is not a playlist.");
-            return;
-        }
-
         userPlayer.simulateTimePass(session.getTimestamp());
 
         if (userPlayer.getPlayerState() == PlayerState.STOPPED) {
@@ -51,9 +45,14 @@ public class ShuffleCommand implements ICommand {
             return;
         }
 
+        if (userPlayer.getCurrPlaying().getType() != AudioType.PLAYLIST) {
+            printer.print("The loaded source is not a playlist.");
+            return;
+        }
+
         Playlist currPlaylist = (Playlist) userPlayer.getCurrPlaying();
 
-        // Clear any old shuffle.
+        // Clear the old shuffle array.
         currPlaylist.getShuffleArray().clear();
 
         if (userPlayer.isShuffle()) {

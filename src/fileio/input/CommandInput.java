@@ -1,6 +1,6 @@
 package fileio.input;
 
-public class CommandInput {
+public final class CommandInput {
     private String command;
     private String username;
     private int timestamp;
@@ -19,7 +19,7 @@ public class CommandInput {
         return command;
     }
 
-    public void setCommand(String command) {
+    public void setCommand(final String command) {
         this.command = command;
     }
 
@@ -27,7 +27,7 @@ public class CommandInput {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -35,7 +35,7 @@ public class CommandInput {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(final int timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -43,7 +43,7 @@ public class CommandInput {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -51,7 +51,7 @@ public class CommandInput {
         return filters;
     }
 
-    public void setFilters(FiltersInput filters) {
+    public void setFilters(final FiltersInput filters) {
         this.filters = filters;
     }
 
@@ -59,7 +59,7 @@ public class CommandInput {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(final int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
@@ -67,7 +67,7 @@ public class CommandInput {
         return playlistId;
     }
 
-    public void setPlaylistId(int playlistId) {
+    public void setPlaylistId(final int playlistId) {
         this.playlistId = playlistId;
     }
 
@@ -75,7 +75,7 @@ public class CommandInput {
         return playlistName;
     }
 
-    public void setPlaylistName(String playlistName) {
+    public void setPlaylistName(final String playlistName) {
         this.playlistName = playlistName;
     }
 
@@ -83,7 +83,7 @@ public class CommandInput {
         return seed;
     }
 
-    public void setSeed(int seed) {
+    public void setSeed(final int seed) {
         this.seed = seed;
     }
 }

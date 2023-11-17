@@ -10,7 +10,7 @@ public enum RepeatState {
 
     private final String label;
 
-    RepeatState(String label) {
+    RepeatState(final String label) {
         this.label = label;
     }
 
@@ -23,7 +23,7 @@ public enum RepeatState {
      * @param prevState State before cycling.
      * @return Following state.
      */
-    public static RepeatState cycleState(RepeatState prevState) {
+    public static RepeatState cycleState(final RepeatState prevState) {
         switch (prevState) {
             case NO_REPEAT_PLAYLIST -> {
                 return REPEAT_ALL_PLAYLIST;
@@ -43,8 +43,11 @@ public enum RepeatState {
             case REPEAT_INFINITE -> {
                 return NO_REPEAT;
             }
+            default -> {
+                // Will never be reached.
+                return prevState;
+            }
         }
-        // Will never be reached.
-        return prevState;
+
     }
 }
