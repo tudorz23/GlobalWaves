@@ -97,7 +97,7 @@ uses them, in this case, the `AdminInteraction`.
 #### Strategy Pattern
 * Used for diverging in implementation between the various ways of searching in
 the database.
-* Based on the `ISearchSrategy` interface, which exposes the `search()` method,
+* Based on the `ISearchStrategy` interface, which exposes the `search()` method,
 paving the way for polymorphism.
 * Concrete strategies then implement this interface, providing separation of
 logic between searching for a song, a podcast or a playlist.

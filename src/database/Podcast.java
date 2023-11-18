@@ -64,6 +64,21 @@ public final class Podcast extends Audio {
 
         int elapsedTime = currTime - player.getPrevTimeInfo();
 
+        if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
+            episodes.get(playingEpisodeIdx).repeatInfinite(elapsedTime);
+            return;
+        }
+
+        if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
+            elapsedTime = episodes.get(playingEpisodeIdx).repeatOnce(player, elapsedTime);
+
+            // Corner case the repeatOnce() method might lead to.
+            if (elapsedTime == 0 && episodes.get(playingEpisodeIdx).getRemainedTime() == 0) {
+                changeToNextEpisode(player);
+                return;
+            }
+        }
+
         while (elapsedTime > 0) {
             Episode playingEpisode = episodes.get(playingEpisodeIdx);
             int episodeRemainedTime = playingEpisode.getRemainedTime();
@@ -89,8 +104,18 @@ public final class Podcast extends Audio {
      * Moves to the next episode, considering the repeat state.
      */
     private void changeToNextEpisode(final Player player) {
-        if (playingEpisodeIdx == episodes.size() - 1
-            && player.getRepeatState() == RepeatState.NO_REPEAT) {
+        if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
+            episodes.get(playingEpisodeIdx).resetTimePosition();
+            return;
+        }
+
+        if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
+            episodes.get(playingEpisodeIdx).resetTimePosition();
+            player.setRepeatState(RepeatState.NO_REPEAT);
+            return;
+        }
+
+        if (playingEpisodeIdx == episodes.size() - 1) {
             // If no repeat is enabled and last episode is reached, stop the player.
             Episode currEpisode = episodes.get(playingEpisodeIdx);
             currEpisode.setTimePosition(currEpisode.getDuration());
@@ -98,14 +123,8 @@ public final class Podcast extends Audio {
             return;
         }
 
-        if (playingEpisodeIdx == episodes.size() - 1
-            && player.getRepeatState() == RepeatState.REPEAT_ONCE) {
-            // Set repeat State to No repeat and continue.
-            player.setRepeatState(RepeatState.NO_REPEAT);
-        }
-
-        // Surely, it is either not last episode or Repeat is enabled.
-        int nextEpisodeIdx = (playingEpisodeIdx + 1) % (episodes.size());
+        // Set the playing Episode to the next one.
+        int nextEpisodeIdx = playingEpisodeIdx + 1;
         this.playingEpisodeIdx = nextEpisodeIdx;
         Episode newEpisode = episodes.get(nextEpisodeIdx);
         newEpisode.setTimePosition(0);

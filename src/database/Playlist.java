@@ -109,7 +109,7 @@ public final class Playlist extends Audio {
     }
 
     /**
-     * @return Index of the shuffleArray where the platingSongIndex
+     * @return Index of the shuffleArray where the playingSongIndex
      * is found as a value.
      */
     private int getShuffleIndex(final int currPlayingSongIndex) {
