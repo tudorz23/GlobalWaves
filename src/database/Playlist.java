@@ -20,14 +20,13 @@ public final class Playlist extends Audio {
         this.owner = owner;
         this.visibility = Visibility.PUBLIC;
         this.songs = new ArrayList<>();
-        setType(AudioType.PLAYLIST);
-        followersCnt = 0;
+        this.setType(AudioType.PLAYLIST);
+        this.followersCnt = 0;
     }
 
     @Override
     public Playlist getDeepCopy() {
         Playlist copy = new Playlist(this.getName(), this.getOwner());
-        copy.songs = new ArrayList<>();
 
         for (Song song : this.songs) {
             copy.songs.add(song.getDeepCopy());
@@ -53,40 +52,38 @@ public final class Playlist extends Audio {
         }
 
         int elapsedTime = currTime - player.getPrevTimeInfo();
+        int songRemainingTime = songs.get(playingSongIndex).getRemainedTime();
 
-        if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
-            simulateRepeatCurrSong(elapsedTime);
-            return;
-        }
-
-        // No repeat or Repeat all state.
-        while (elapsedTime > 0) {
-            Song playingSong = songs.get(playingSongIndex);
-            int songRemainedTime = playingSong.getRemainedTime();
-
-            // If the player stopped, return.
+        while (elapsedTime >= songRemainingTime) {
             if (player.getPlayerState() == PlayerState.STOPPED) {
                 return;
             }
 
-            if (songRemainedTime <= elapsedTime) {
-                changeToNextSong(player);
+            changeToNextSong(player);
+            elapsedTime -= songRemainingTime;
 
-                elapsedTime -= songRemainedTime;
-                continue;
-            }
-
-            int songNewTimePos = playingSong.getTimePosition() + elapsedTime;
-            playingSong.setTimePosition(songNewTimePos);
-            elapsedTime = 0;
+            songRemainingTime = songs.get(playingSongIndex).getRemainedTime();
         }
+
+        if (elapsedTime == 0) {
+            return;
+        }
+
+        Song playingSong = songs.get(playingSongIndex);
+        int songNewTimePos = playingSong.getTimePosition() + elapsedTime;
+        playingSong.setTimePosition(songNewTimePos);
     }
 
     /**
      * Moves to the next song in the playlist, considering the shuffled state
-     * of the playlist.
+     * of the playlist and the repeat state.
      */
     private void changeToNextSong(final Player player) {
+        if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
+            songs.get(playingSongIndex).resetTimePosition();
+            return;
+        }
+
         int shuffleIndex = getShuffleIndex(playingSongIndex);
 
         if (shuffleIndex == shuffleArray.size() - 1
@@ -94,6 +91,7 @@ public final class Playlist extends Audio {
             // If No repeat is enabled and last song is reached, stop the player.
             Song currSong = songs.get(playingSongIndex);
             currSong.setTimePosition(currSong.getDuration());
+
             player.setPlayerState(PlayerState.STOPPED);
             player.setShuffle(false);
             return;
@@ -109,26 +107,20 @@ public final class Playlist extends Audio {
     }
 
     /**
-     * @return Index of the shuffleArray where the playingSongIndex
+     * @return Index of the shuffleArray where the songArrayIndex
      * is found as a value.
+     * @param songArrayIndex index from the array of songs.
+     * @throws IllegalArgumentException if the passed index is out of bounds.
      */
-    private int getShuffleIndex(final int currPlayingSongIndex) {
+    private int getShuffleIndex(final int songArrayIndex) {
         for (int i = 0; i < shuffleArray.size(); i++) {
-            if (shuffleArray.get(i) == currPlayingSongIndex) {
+            if (shuffleArray.get(i) == songArrayIndex) {
                 return i;
             }
         }
-        // Never reached.
-        return -1;
-    }
 
-    /**
-     * Sets the new Time position for the currently playing song.
-     */
-    private void simulateRepeatCurrSong(final int elapsedTime) {
-        Song currSong = songs.get(playingSongIndex);
-        int newTimePos = (currSong.getTimePosition() + elapsedTime) % currSong.getDuration();
-        currSong.setTimePosition(newTimePos);
+        // Should never be reached.
+        throw new IllegalArgumentException("Invalid index argument passed!");
     }
 
     @Override
@@ -139,16 +131,10 @@ public final class Playlist extends Audio {
 
     @Override
     public void next(final Player player) {
-        if (player.getRepeatState() == RepeatState.REPEAT_CURR_SONG_PLAYLIST) {
-            Song currSong = songs.get(playingSongIndex);
-            currSong.setTimePosition(0);
-            return;
-        }
-
         changeToNextSong(player);
 
         if (player.getPlayerState() == PlayerState.PAUSED) {
-                player.setPlayerState(PlayerState.PLAYING);
+            player.setPlayerState(PlayerState.PLAYING);
         }
     }
 

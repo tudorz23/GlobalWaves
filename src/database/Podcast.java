@@ -14,14 +14,18 @@ public final class Podcast extends Audio {
     private int playingEpisodeIdx;
 
     /* Constructors */
-    private Podcast() {
+    private Podcast(final String name, final String owner) {
+        super(name);
+        this.owner = owner;
+        this.setType(AudioType.PODCAST);
+        this.episodes = new ArrayList<>();
     }
 
     public Podcast(final PodcastInput podcastInput) {
         super(podcastInput.getName());
         this.owner = podcastInput.getOwner();
         this.episodes = initializeEpisodes(podcastInput.getEpisodes());
-        setType(AudioType.PODCAST);
+        this.setType(AudioType.PODCAST);
     }
 
     /**
@@ -41,11 +45,7 @@ public final class Podcast extends Audio {
 
     @Override
     public Podcast getDeepCopy() {
-        Podcast copy = new Podcast();
-        copy.setName(this.getName());
-        copy.setType(this.getType());
-        copy.owner = this.owner;
-        copy.episodes = new ArrayList<>();
+        Podcast copy = new Podcast(this.getName(), this.getOwner());
 
         for (Episode episode : this.episodes) {
             copy.episodes.add(episode.getDeepCopy());
@@ -63,41 +63,26 @@ public final class Podcast extends Audio {
         }
 
         int elapsedTime = currTime - player.getPrevTimeInfo();
+        int episodeRemainingTime = episodes.get(playingEpisodeIdx).getRemainedTime();
 
-        if (player.getRepeatState() == RepeatState.REPEAT_INFINITE) {
-            episodes.get(playingEpisodeIdx).repeatInfinite(elapsedTime);
-            return;
-        }
-
-        if (player.getRepeatState() == RepeatState.REPEAT_ONCE) {
-            elapsedTime = episodes.get(playingEpisodeIdx).repeatOnce(player, elapsedTime);
-
-            // Corner case the repeatOnce() method might lead to.
-            if (elapsedTime == 0 && episodes.get(playingEpisodeIdx).getRemainedTime() == 0) {
-                changeToNextEpisode(player);
-                return;
-            }
-        }
-
-        while (elapsedTime > 0) {
-            Episode playingEpisode = episodes.get(playingEpisodeIdx);
-            int episodeRemainedTime = playingEpisode.getRemainedTime();
-
-            // If the player stopped, return.
+        while (elapsedTime >= episodeRemainingTime) {
             if (player.getPlayerState() == PlayerState.STOPPED) {
                 return;
             }
 
-            if (episodeRemainedTime <= elapsedTime) {
-                changeToNextEpisode(player);
-                elapsedTime -= episodeRemainedTime;
-                continue;
-            }
+            changeToNextEpisode(player);
+            elapsedTime -= episodeRemainingTime;
 
-            int episodeNewTimePos = playingEpisode.getTimePosition() + elapsedTime;
-            playingEpisode.setTimePosition(episodeNewTimePos);
-            elapsedTime = 0;
+            episodeRemainingTime = episodes.get(playingEpisodeIdx).getRemainedTime();
         }
+
+        if (elapsedTime == 0) {
+            return;
+        }
+
+        Episode playingEpisode = episodes.get(playingEpisodeIdx);
+        int episodeNewTimePos = playingEpisode.getTimePosition() + elapsedTime;
+        playingEpisode.setTimePosition(episodeNewTimePos);
     }
 
     /**
@@ -119,6 +104,7 @@ public final class Podcast extends Audio {
             // If no repeat is enabled and last episode is reached, stop the player.
             Episode currEpisode = episodes.get(playingEpisodeIdx);
             currEpisode.setTimePosition(currEpisode.getDuration());
+
             player.setPlayerState(PlayerState.STOPPED);
             return;
         }
@@ -151,7 +137,7 @@ public final class Podcast extends Audio {
 
         if (playingEpisode.getTimePosition() != 0) {
             // At least 1 second passed.
-            playingEpisode.setTimePosition(0);
+            playingEpisode.resetTimePosition();
 
             if (player.getPlayerState() == PlayerState.PAUSED) {
                 player.setPlayerState(PlayerState.PLAYING);

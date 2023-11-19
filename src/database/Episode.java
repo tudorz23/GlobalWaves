@@ -1,7 +1,6 @@
 package database;
 
 import fileio.input.EpisodeInput;
-import utils.RepeatState;
 
 public final class Episode {
     private String name;
@@ -38,44 +37,6 @@ public final class Episode {
      */
     public int getRemainedTime() {
         return (duration - timePosition);
-    }
-
-    /**
-     * Simulates the time passing when Repeat Infinite on an Episode is on.
-     */
-    public void repeatInfinite(final int elapsedTime) {
-        timePosition = (timePosition + elapsedTime) % duration;
-    }
-
-    /**
-     * Simulates the time passing when Repeat Once on an Episode is on.
-     * @param player User's player.
-     * @param elapsedTime Time to be simulated.
-     * @return Remaining time to be simulated.
-     */
-    public int repeatOnce(final Player player, final int elapsedTime) {
-        int quotient = (timePosition + elapsedTime) / duration;
-        int remainder = (timePosition + elapsedTime) % duration;
-
-        if (quotient == 0) {
-            // No repeat necessary.
-            timePosition = remainder;
-            return 0;
-        }
-
-        if (quotient == 1) {
-            // Repeat it once and set repeat state to No repeat.
-            player.setRepeatState(RepeatState.NO_REPEAT);
-            timePosition = remainder;
-            return 0;
-        }
-
-        // quotient > 1. Repeat it once, then calculate the remaining time.
-        int remainingTimeToSimulate = elapsedTime - getRemainedTime() - duration;
-
-        player.setRepeatState(RepeatState.NO_REPEAT);
-        timePosition = duration;
-        return remainingTimeToSimulate;
     }
 
     /**

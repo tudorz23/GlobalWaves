@@ -30,8 +30,8 @@ public final class Song extends Audio {
         this.genre = songInput.getGenre();
         this.releaseYear = songInput.getReleaseYear();
         this.artist = songInput.getArtist();
-        setType(AudioType.SONG);
-        likeCnt = 0;
+        this.setType(AudioType.SONG);
+        this.likeCnt = 0;
     }
 
     @Override
@@ -124,6 +124,13 @@ public final class Song extends Audio {
         // Surely, song ended.
         player.setPlayerState(PlayerState.STOPPED);
         timePosition = duration;
+    }
+
+    /**
+     * Sets the time position to 0.
+     */
+    public void resetTimePosition() {
+        timePosition = 0;
     }
 
     @Override
